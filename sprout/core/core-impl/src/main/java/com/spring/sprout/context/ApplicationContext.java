@@ -8,7 +8,7 @@ import com.spring.sprout.error.SpringException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ApplicationContext implements ListableBeanFactory {
+public class ApplicationContext implements BeanFactory {
 
     private Map<String, Object> beanRegistry = new HashMap<>();
 

@@ -2,7 +2,7 @@ package com.spring.sprout.context;
 
 import java.util.Map;
 
-public interface ListableBeanFactory {
+public interface BeanFactory {
 
     Object getBean(String beanName);
 
