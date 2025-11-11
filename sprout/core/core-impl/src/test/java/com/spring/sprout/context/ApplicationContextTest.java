@@ -27,7 +27,7 @@ public class ApplicationContextTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        context = new ApplicationContext();
+        context = new ApplicationContext(new Environment());
         Field registryField = ApplicationContext.class.getDeclaredField("beanRegistry");
         registryField.setAccessible(true);
         Map<String, Object> beanRegistry = (Map<String, Object>) registryField.get(context);

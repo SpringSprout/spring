@@ -8,10 +8,16 @@ import com.spring.sprout.error.SpringException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ApplicationContext implements BeanFactory {
+public class ApplicationContext implements BeanFactory, EnvironmentCapable {
 
     private Map<String, Object> beanRegistry = new HashMap<>();
+    private Environment environment;
 
+    public ApplicationContext(Environment environment) {
+        this.environment = environment;
+    }
+
+    // BeanFactory
     @Override
     public Object getBean(String name) {
         Object bean = beanRegistry.get(name);
@@ -42,5 +48,11 @@ public class ApplicationContext implements BeanFactory {
             }
         }
         return result;
+    }
+
+    // EnvironmentCapable
+    @Override
+    public Environment getEnvironment() {
+        return this.environment;
     }
 }
