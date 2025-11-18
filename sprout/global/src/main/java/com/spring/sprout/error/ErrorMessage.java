@@ -9,8 +9,15 @@ public enum ErrorMessage {
     // 설정 파일 오류
     FILE_NOT_LOADED("설정 파일이 로드되지 않았습니다."),
 
+    // 파일 오류
     FILE_NOT_FOUND("해당 경로에 파일이 없습니다."),
-    FILE_NOT_RESOLVED("해당 파일를 로드할 수 없습니다.");
+    FILE_NOT_RESOLVED("해당 파일를 로드할 수 없습니다."),
+
+    // 빈 등록 오류
+    BEAN_NAME_CONFLICT("동일한 이름의 빈이 이미 있습니다"),
+
+    // 빈 스캔 오류
+    BEAN_SCAN_FAILED("빈 스캔에 실패했습니다.");
 
     private final String message;
 

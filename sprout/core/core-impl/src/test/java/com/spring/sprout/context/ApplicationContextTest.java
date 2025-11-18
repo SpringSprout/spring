@@ -14,7 +14,6 @@ import com.spring.sprout.error.ErrorMessage;
 import com.spring.sprout.error.SpringException;
 import java.lang.reflect.Field;
 import java.util.Map;
-import javax.swing.Spring;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,14 +26,53 @@ public class ApplicationContextTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        context = new ApplicationContext(new Environment());
-        Field registryField = ApplicationContext.class.getDeclaredField("beanRegistry");
-        registryField.setAccessible(true);
-        Map<String, Object> beanRegistry = (Map<String, Object>) registryField.get(context);
+        context = new ApplicationContext(new Environment(), new ClassScanner());
 
-        beanRegistry.put("testClass1", testClass1);
-        beanRegistry.put("testClass2", testClass2);
-        beanRegistry.put("uniqueClass", uniqueClass);
+        context.registerBean("testClass1", testClass1);
+        context.registerBean("testClass2", testClass2);
+        context.registerBean("uniqueClass", uniqueClass);
+    }
+
+    // register Bean test
+    @Test
+    public void 동일_이름으로_빈_등록시_에러처리() {
+        // given, when
+        Object newBean = new TestClass1();
+
+        // then
+        SpringException e = assertThrows(SpringException.class, () -> {
+            context.registerBean("testClass1", newBean);
+        });
+        assertEquals(ErrorMessage.BEAN_NAME_CONFLICT.getMessage(), e.getMessage());
+    }
+
+    // scan Bean test
+    @Test
+    public void 지정된_패키지에서_Component_스캔하고_빈으로_등록하기() {
+        // given
+        ApplicationContext scanContext = new ApplicationContext(new Environment(),
+            new ClassScanner());
+        String scanPackage = "com.spring.sprout.dummy.scan";
+
+        // when
+        scanContext.scan(scanPackage);
+
+        // then
+        // 1. 기본이름 등록 확인
+        Object defaultBean = scanContext.getBean("scanComponent");
+        assertNotNull(defaultBean);
+        assertTrue(defaultBean instanceof com.spring.sprout.dummy.scan.ScanComponent);
+
+        // 2. 지정이름 확인
+        Object namedBean = scanContext.getBean("customBean");
+        assertNotNull(namedBean);
+        assertTrue(namedBean instanceof com.spring.sprout.dummy.scan.ScanComponentWithName);
+
+        // 3. @Component 없는 클래스는 스캔 대상이 아님
+        SpringException exception = assertThrows(SpringException.class, () -> {
+            scanContext.getBean("notScanComponent");
+        });
+        assertEquals(ErrorMessage.NO_BEAN_FOUND_WITH_NAME.getMessage(), exception.getMessage());
     }
 
     // getBean(String name) test
