@@ -6,5 +6,5 @@ import lombok.Getter;
 @Getter
 public class BeanFactory {
 
-    HashMap<Object, Object> beans = new HashMap<>();
+    HashMap<String, Object> beans = new HashMap<>();
 }
