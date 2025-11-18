@@ -1,4 +1,4 @@
-package SpringSprout.ioc;
+package com.spring.sprout.ioc;
 
 import java.util.HashMap;
 import lombok.Getter;
