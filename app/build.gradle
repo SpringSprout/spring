@@ -2,7 +2,7 @@ plugins {
     id 'application'
 }
 dependencies {
-    implementation project(':sprout:global')
-    implementation project(':sprout:core-impl')
-    implementation project(':sprout:boot-impl')
+    runtimeOnly project(':sprout:global')
+    runtimeOnly project(':sprout:core-impl')
+    runtimeOnly project(':sprout:boot-impl')
 }
