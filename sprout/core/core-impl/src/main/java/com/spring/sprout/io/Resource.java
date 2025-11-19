@@ -1,10 +1,8 @@
-package com.spring.sprout.context;
+package com.spring.sprout.io;
 
 import com.spring.sprout.error.ErrorMessage;
 import com.spring.sprout.error.SpringException;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 

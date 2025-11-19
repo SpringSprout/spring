@@ -1,4 +1,4 @@
-package com.spring.sprout.context;
+package com.spring.sprout.io;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -9,13 +9,13 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ClassScannerTest {
+public class ResourcePatternResolverImplTest {
 
-    private ClassScanner scanner;
+    private ResourcePatternResolverImpl scanner;
 
     @BeforeEach
     public void setUp() {
-        this.scanner = new ClassScanner();
+        this.scanner = new ResourcePatternResolverImpl();
     }
 
     @Test

@@ -1,4 +1,4 @@
-package com.spring.sprout.context;
+package com.spring.sprout.io;
 
 import com.spring.sprout.error.ErrorMessage;
 import com.spring.sprout.error.SpringException;
@@ -9,11 +9,11 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ClassScanner implements ResourcePatternResolver {
+public class ResourcePatternResolverImpl implements ResourcePatternResolver {
 
     private final ClassLoader classLoader;
 
-    public ClassScanner() {
+    public ResourcePatternResolverImpl() {
         this.classLoader = Thread.currentThread().getContextClassLoader();
     }
 

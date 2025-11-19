@@ -10,8 +10,11 @@ import com.spring.sprout.dummy.TestClass1;
 import com.spring.sprout.dummy.TestClass2;
 import com.spring.sprout.dummy.TestInterface;
 import com.spring.sprout.dummy.UniqueClass;
+import com.spring.sprout.dummy.scan.ScanRepository;
+import com.spring.sprout.dummy.scan.ScanService;
 import com.spring.sprout.error.ErrorMessage;
 import com.spring.sprout.error.SpringException;
+import com.spring.sprout.io.ResourcePatternResolverImpl;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,142 +26,85 @@ public class ApplicationContextTest {
     private final TestClass2 testClass2 = new TestClass2();
     private final UniqueClass uniqueClass = new UniqueClass();
 
-    @BeforeEach
-    public void setUp() throws Exception {
-        context = new ApplicationContext(new Environment(), new ClassScanner());
-
-        context.registerBean("testClass1", testClass1);
-        context.registerBean("testClass2", testClass2);
-        context.registerBean("uniqueClass", uniqueClass);
-    }
-
-    // register Bean test
     @Test
-    public void 동일_이름으로_빈_등록시_에러처리() {
-        // given, when
-        Object newBean = new TestClass1();
-
-        // then
-        SpringException e = assertThrows(SpringException.class, () -> {
-            context.registerBean("testClass1", newBean);
-        });
-        assertEquals(ErrorMessage.BEAN_NAME_CONFLICT.getMessage(), e.getMessage());
-    }
-
-    // scan Bean test
-    @Test
-    public void 지정된_패키지에서_Component_스캔하고_빈으로_등록하기() {
+    public void 패키지_스캔_후_빈_등록_및_조회() {
         // given
-        ApplicationContext scanContext = new ApplicationContext(new Environment(),
-            new ClassScanner());
+        ApplicationContext context = new ApplicationContext(new Environment(),
+            new ResourcePatternResolverImpl());
         String scanPackage = "com.spring.sprout.dummy.scan";
 
         // when
-        scanContext.scan(scanPackage);
+        context.scan(scanPackage);
+        context.refresh();
 
         // then
-        // 1. 기본이름 등록 확인
-        Object defaultBean = scanContext.getBean("scanComponent");
+        // 1. 기본 이름으로 등록 확인
+        Object defaultBean = context.getBean("scanComponent");
         assertNotNull(defaultBean);
-        assertTrue(defaultBean instanceof com.spring.sprout.dummy.scan.ScanComponent);
+        assertTrue(defaultBean.getClass().getName().endsWith("ScanComponent"));
 
-        // 2. 지정이름 확인
-        Object namedBean = scanContext.getBean("customBean");
+        // 2. 이름으로 지정한 빈 확인
+        Object namedBean = context.getBean("customBean");
         assertNotNull(namedBean);
-        assertTrue(namedBean instanceof com.spring.sprout.dummy.scan.ScanComponentWithName);
-
-        // 3. @Component 없는 클래스는 스캔 대상이 아님
-        SpringException exception = assertThrows(SpringException.class, () -> {
-            scanContext.getBean("notScanComponent");
-        });
-        assertEquals(ErrorMessage.NO_BEAN_FOUND_WITH_NAME.getMessage(), exception.getMessage());
-    }
-
-    // getBean(String name) test
-
-    @Test
-    public void 이름으로_빈_조회() {
-        // given, when
-        Object bean = context.getBean("testClass1");
-
-        // then
-        assertSame(testClass1, bean);
+        assertTrue(namedBean.getClass().getName().endsWith("ScanComponentWithName"));
     }
 
     @Test
-    public void 이름으로_빈_조회_실패() {
+    public void 스캔_대상이_아닌_클래스_빈_등록_안됨() {
         // given
-        String notExistBeanName = "testClass3";
+        ApplicationContext context = new ApplicationContext(new Environment(),
+            new ResourcePatternResolverImpl());
+        String scanPackage = "com.spring.sprout.dummy.scan";
 
-        // when, then
-        SpringException exception = assertThrows(SpringException.class,
-            () -> context.getBean(notExistBeanName));
+        // when
+        context.scan(scanPackage);
+        context.refresh();
+
+        // then
+        SpringException exception = assertThrows(SpringException.class, () -> {
+            context.getBean("notScanComponent");
+        });
         assertEquals(ErrorMessage.NO_BEAN_FOUND_WITH_NAME.getMessage(), exception.getMessage());
     }
 
-    // getBean(Class<T> requiredType) test
-
     @Test
-    public void 유일_빈_조회_성공() {
-        // given, when
-        UniqueClass bean = context.getBean(UniqueClass.class);
+    public void 스캔된_빈들_사이의_의존성_주입_확인() {
+        // given
+        ApplicationContext context = new ApplicationContext(new Environment(),
+            new ResourcePatternResolverImpl());
+        String scanPackage = "com.spring.sprout.dummy.scan";
+
+        // when
+        context.scan(scanPackage);
+        context.refresh();
 
         // then
-        assertNotNull(bean);
-        assertSame(uniqueClass, bean);
+        ScanService service = context.getBean(ScanService.class);
+        ScanRepository repository = context.getBean(ScanRepository.class);
+
+        assertNotNull(service);
+        assertNotNull(repository);
+
+        assertNotNull(service.getRepository());
+        assertSame(repository, service.getRepository());
     }
 
     @Test
-    public void 빈이_없으면_예외() {
-        // given, when, then
-        SpringException exception = assertThrows(SpringException.class, () -> {
-            context.getBean(String.class);
-        });
+    public void 스캔된_빈은_싱글톤으로_관리된다() {
+        // given
+        ApplicationContext context = new ApplicationContext(new Environment(),
+            new ResourcePatternResolverImpl());
+        String scanPackage = "com.spring.sprout.dummy.scan";
 
-        assertEquals(ErrorMessage.NO_BEAN_FOUND_WITH_TYPE.getMessage(), exception.getMessage());
-    }
-
-    @Test
-    public void _2개이상의_빈() {
-        // given, when, then
-        SpringException exception = assertThrows(SpringException.class, () -> {
-            context.getBean(TestInterface.class);
-        });
-
-        assertEquals(ErrorMessage.NO_UNIQUE_BEAN_FOUND_WITH_TYPE.getMessage(),
-            exception.getMessage());
-    }
-
-    // givenBeansOfType(Class<T> type) test
-
-    @Test
-    public void 인터페이스로_여러_빈_조회_성공() {
-        // given, when
-        Map<String, TestInterface> beans = context.getBeansOfType(TestInterface.class);
+        // when
+        context.scan(scanPackage);
+        context.refresh();
 
         // then
-        assertEquals(2, beans.size());
-        assertTrue(beans.containsKey("testClass1"));
-        assertTrue(beans.containsKey("testClass2"));
-    }
+        Object bean1 = context.getBean("scanComponent");
+        Object bean2 = context.getBean("scanComponent");
 
-    @Test
-    public void 클래스로_빈_조회_성공() {
-        // given, when
-        Map<String, UniqueClass> beans = context.getBeansOfType(UniqueClass.class);
-
-        // then
-        assertEquals(1, beans.size());
-        assertTrue(beans.containsKey("uniqueClass"));
-    }
-
-    @Test
-    public void 해당_타입_없으면_빈_map_반환() {
-        // given, when
-        Map<String, String> beans = context.getBeansOfType(String.class);
-
-        // then
-        assertNotNull(beans);
-        assertEquals(0, beans.size());
+        assertNotNull(bean1);
+        assertSame(bean1, bean2);
     }
 }

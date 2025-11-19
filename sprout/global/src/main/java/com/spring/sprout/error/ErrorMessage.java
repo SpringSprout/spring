@@ -17,7 +17,13 @@ public enum ErrorMessage {
     BEAN_NAME_CONFLICT("동일한 이름의 빈이 이미 있습니다"),
 
     // 빈 스캔 오류
-    BEAN_SCAN_FAILED("빈 스캔에 실패했습니다.");
+    BEAN_SCAN_FAILED("빈 스캔에 실패했습니다."),
+
+    // 빈 생성 오류
+    BEAN_CREATION_FAILED("빈 생성에 실패했습니다."),
+
+    // 생성자 오류
+    NOT_UNIQUE_AUTOWIRED("Autowired 생성자는 하나만 허용됩니다.");
 
     private final String message;
 

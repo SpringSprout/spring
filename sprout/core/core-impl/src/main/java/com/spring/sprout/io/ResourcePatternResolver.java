@@ -1,4 +1,4 @@
-package com.spring.sprout.context;
+package com.spring.sprout.io;
 
 public interface ResourcePatternResolver {
 
