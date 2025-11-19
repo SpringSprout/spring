@@ -54,5 +54,4 @@ public class Resource {
             return new File(url.getFile());
         }
     }
-
 }

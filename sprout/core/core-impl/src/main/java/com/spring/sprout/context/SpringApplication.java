@@ -1,4 +1,4 @@
-package com.spring.sprout.ioc;
+package com.spring.sprout.context;
 
 import com.spring.sprout.annotation.Autowired;
 import java.lang.reflect.Constructor;
