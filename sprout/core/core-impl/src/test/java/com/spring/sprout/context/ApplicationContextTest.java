@@ -8,15 +8,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spring.sprout.dummy.TestClass1;
 import com.spring.sprout.dummy.TestClass2;
-import com.spring.sprout.dummy.TestInterface;
 import com.spring.sprout.dummy.UniqueClass;
 import com.spring.sprout.dummy.scan.ScanRepository;
 import com.spring.sprout.dummy.scan.ScanService;
 import com.spring.sprout.error.ErrorMessage;
 import com.spring.sprout.error.SpringException;
-import com.spring.sprout.io.ResourcePatternResolverImpl;
-import java.util.Map;
-import org.junit.jupiter.api.BeforeEach;
+import com.spring.sprout.io.ResourcePatternResolver;
 import org.junit.jupiter.api.Test;
 
 public class ApplicationContextTest {
@@ -30,7 +27,7 @@ public class ApplicationContextTest {
     public void 패키지_스캔_후_빈_등록_및_조회() {
         // given
         ApplicationContext context = new ApplicationContext(new Environment(),
-            new ResourcePatternResolverImpl());
+            new ResourcePatternResolver());
         String scanPackage = "com.spring.sprout.dummy.scan";
 
         // when
@@ -53,7 +50,7 @@ public class ApplicationContextTest {
     public void 스캔_대상이_아닌_클래스_빈_등록_안됨() {
         // given
         ApplicationContext context = new ApplicationContext(new Environment(),
-            new ResourcePatternResolverImpl());
+            new ResourcePatternResolver());
         String scanPackage = "com.spring.sprout.dummy.scan";
 
         // when
@@ -71,7 +68,7 @@ public class ApplicationContextTest {
     public void 스캔된_빈들_사이의_의존성_주입_확인() {
         // given
         ApplicationContext context = new ApplicationContext(new Environment(),
-            new ResourcePatternResolverImpl());
+            new ResourcePatternResolver());
         String scanPackage = "com.spring.sprout.dummy.scan";
 
         // when
@@ -93,7 +90,7 @@ public class ApplicationContextTest {
     public void 스캔된_빈은_싱글톤으로_관리된다() {
         // given
         ApplicationContext context = new ApplicationContext(new Environment(),
-            new ResourcePatternResolverImpl());
+            new ResourcePatternResolver());
         String scanPackage = "com.spring.sprout.dummy.scan";
 
         // when

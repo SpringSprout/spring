@@ -9,13 +9,13 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ResourcePatternResolverImplTest {
+public class ResourcePatternResolverTest {
 
-    private ResourcePatternResolverImpl scanner;
+    private ResourcePatternResolver scanner;
 
     @BeforeEach
     public void setUp() {
-        this.scanner = new ResourcePatternResolverImpl();
+        this.scanner = new ResourcePatternResolver();
     }
 
     @Test

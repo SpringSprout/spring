@@ -1,15 +1,15 @@
 package com.spring.sprout;
 
+
 import com.spring.sprout.context.ApplicationContext;
 import com.spring.sprout.context.Environment;
 import com.spring.sprout.io.ResourcePatternResolver;
-import com.spring.sprout.io.ResourcePatternResolverImpl;
 
 public class SpringApplication {
 
     public static ApplicationContext run(Class<?> mainClass) {
         Environment environment = new Environment();
-        ResourcePatternResolver scanner = new ResourcePatternResolverImpl();
+        ResourcePatternResolver scanner = new ResourcePatternResolver();
 
         ApplicationContext context = new ApplicationContext(environment, scanner);
 
