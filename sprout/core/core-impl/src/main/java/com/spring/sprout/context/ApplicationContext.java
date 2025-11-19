@@ -18,7 +18,6 @@ public class ApplicationContext extends BeanFactory {
         this.scanner = scanner;
     }
 
-    // 1. 스캔 -> 어떤 클래스가 빈 대상인지 조사
     public void scan(String basePackage) {
         Resource[] resources = scanner.getResources(basePackage);
         for (Resource resource : resources) {
@@ -35,7 +34,6 @@ public class ApplicationContext extends BeanFactory {
         }
     }
 
-    // 2. 리프레시 단계 -> 실제 빈을 생성 후 의존성 주입
     public void refresh() {
         super.preInstantiateSingletons();
     }
