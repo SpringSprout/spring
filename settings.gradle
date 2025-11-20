@@ -2,8 +2,9 @@ rootProject.name = 'spring'
 
 include ':app', ':sprout:global',
         ':sprout:core-api', ':sprout:core-impl',
-        ':sprout:boot-api', ':sprout:boot-impl',
-        ':sprout:autowired-api', ':sprout:autowired-impl'
+        ':sprout:web-api', ':sprout:web-impl',
+        ':sprout:data-api', ':sprout:data-impl'
+
 
 project(':app').projectDir = file('app')
 
@@ -11,3 +12,9 @@ project(':sprout:global').projectDir = file('sprout/global')
 
 project(':sprout:core-api').projectDir = file('sprout/core/core-api')
 project(':sprout:core-impl').projectDir = file('sprout/core/core-impl')
+
+project(':sprout:web-api').projectDir = file('sprout/web/web-api')
+project(':sprout:web-impl').projectDir = file('sprout/web/web-impl')
+
+project(':sprout:data-api').projectDir = file('sprout/data/data-api')
+project(':sprout:data-impl').projectDir = file('sprout/data/data-impl')
