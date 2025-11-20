@@ -4,10 +4,14 @@ import com.spring.sprout.error.ErrorMessage;
 import com.spring.sprout.error.SpringException;
 import java.io.File;
 import java.io.IOException;
+import java.net.JarURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 public class ResourcePatternResolver {
 
@@ -49,9 +53,12 @@ public class ResourcePatternResolver {
 
         while (resources.hasMoreElements()) {
             URL resourceUrl = resources.nextElement();
-            if (resourceUrl.getProtocol().equals("file")) {
+            String protocol = resourceUrl.getProtocol();
+            if ("file".equals(protocol)) {
                 File directory = new File(resourceUrl.getFile());
                 findClassResourcesInDirectory(path, directory, result);
+            } else if ("jar".equals(protocol)) {
+                findClassResourcesInJar(path, resourceUrl, result);
             }
         }
     }
@@ -71,6 +78,26 @@ public class ResourcePatternResolver {
             } else if (fileName.endsWith(".class")) {
                 String resourcePath = basePackagePath + "/" + fileName;
                 result.add(new Resource(resourcePath, this.classLoader));
+            }
+        }
+    }
+
+    private void findClassResourcesInJar(String path, URL resourceUrl, Set<Resource> result)
+        throws IOException {
+        URLConnection con = resourceUrl.openConnection();
+        if (con instanceof JarURLConnection) {
+            JarURLConnection jarCon = (JarURLConnection) con;
+            jarCon.setUseCaches(false);
+            try (JarFile jarFile = jarCon.getJarFile()) {
+                Enumeration<JarEntry> entries = jarFile.entries();
+
+                while (entries.hasMoreElements()) {
+                    JarEntry entry = entries.nextElement();
+                    String entryName = entry.getName();
+                    if (entryName.startsWith(path) && entryName.endsWith(".class")) {
+                        result.add(new Resource(entryName, this.classLoader));
+                    }
+                }
             }
         }
     }

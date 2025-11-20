@@ -10,10 +10,10 @@ import com.spring.sprout.io.ResourcePatternResolver;
 
 public class ApplicationContext extends BeanFactory {
 
-    private final Environment environment;
+    private final EnvironmentImpl environment;
     private final ResourcePatternResolver scanner;
 
-    public ApplicationContext(Environment environment, ResourcePatternResolver scanner) {
+    public ApplicationContext(EnvironmentImpl environment, ResourcePatternResolver scanner) {
         this.environment = environment;
         this.scanner = scanner;
     }

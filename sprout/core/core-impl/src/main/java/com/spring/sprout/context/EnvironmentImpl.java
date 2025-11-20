@@ -1,21 +1,22 @@
 package com.spring.sprout.context;
 
+import com.spring.sprout.Environment;
 import com.spring.sprout.error.ErrorMessage;
 import com.spring.sprout.error.SpringException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class Environment {
+public class EnvironmentImpl implements Environment {
 
     private static final String PROPERTIES_PATH = "application.properties";
     private final Properties properties = new Properties();
 
-    public Environment() {
+    public EnvironmentImpl() {
         loadProperties(PROPERTIES_PATH);
     }
 
-    public Environment(String configPath) {
+    public EnvironmentImpl(String configPath) {
         loadProperties(configPath);
     }
 
@@ -30,6 +31,7 @@ public class Environment {
         }
     }
 
+    @Override
     public String getProperty(String key) {
         return properties.getProperty(key);
     }

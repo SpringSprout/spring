@@ -26,7 +26,7 @@ public class ApplicationContextTest {
     @Test
     public void 패키지_스캔_후_빈_등록_및_조회() {
         // given
-        ApplicationContext context = new ApplicationContext(new Environment(),
+        ApplicationContext context = new ApplicationContext(new EnvironmentImpl(),
             new ResourcePatternResolver());
         String scanPackage = "com.spring.sprout.dummy.scan";
 
@@ -49,7 +49,7 @@ public class ApplicationContextTest {
     @Test
     public void 스캔_대상이_아닌_클래스_빈_등록_안됨() {
         // given
-        ApplicationContext context = new ApplicationContext(new Environment(),
+        ApplicationContext context = new ApplicationContext(new EnvironmentImpl(),
             new ResourcePatternResolver());
         String scanPackage = "com.spring.sprout.dummy.scan";
 
@@ -67,7 +67,7 @@ public class ApplicationContextTest {
     @Test
     public void 스캔된_빈들_사이의_의존성_주입_확인() {
         // given
-        ApplicationContext context = new ApplicationContext(new Environment(),
+        ApplicationContext context = new ApplicationContext(new EnvironmentImpl(),
             new ResourcePatternResolver());
         String scanPackage = "com.spring.sprout.dummy.scan";
 
@@ -89,7 +89,7 @@ public class ApplicationContextTest {
     @Test
     public void 스캔된_빈은_싱글톤으로_관리된다() {
         // given
-        ApplicationContext context = new ApplicationContext(new Environment(),
+        ApplicationContext context = new ApplicationContext(new EnvironmentImpl(),
             new ResourcePatternResolver());
         String scanPackage = "com.spring.sprout.dummy.scan";
 
