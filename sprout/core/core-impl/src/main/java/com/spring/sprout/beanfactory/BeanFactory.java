@@ -31,6 +31,13 @@ public class BeanFactory {
         }
     }
 
+    public void registerSingleton(String name, Object singletonObject) {
+        if (singletonObjects.containsKey(name)) {
+            return;
+        }
+        singletonObjects.put(name, singletonObject);
+    }
+
     private Object createBean(Class<?> clazz) {
         String beanName = beanNameGenerator.determineBeanName(clazz);
 

@@ -13,6 +13,8 @@ public class SpringApplication {
 
         ApplicationContext context = new ApplicationContext(environment, scanner);
 
+        context.registerSingleton("environment", environment);
+        
         try {
             String basePackage = environment.getProperty("scan.base-package");
 
