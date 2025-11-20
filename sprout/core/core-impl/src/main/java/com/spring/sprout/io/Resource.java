@@ -44,7 +44,6 @@ public class Resource {
         }
         if (!"file".equals(url.getProtocol())) {
             throw new SpringException(ErrorMessage.FILE_NOT_RESOLVED);
-
         }
         try {
             return new File(url.toURI());

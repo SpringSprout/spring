@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class ResourcePatternResolver {
 
-    String CLASSPATH_URL_PREFIX = "classpath:";
+    private static final String CLASSPATH_URL_PREFIX = "classpath:";
     private final ClassLoader classLoader;
 
     public ResourcePatternResolver() {
