@@ -2,9 +2,9 @@ plugins {
     id 'java-library'
 }
 dependencies {
-//  *** 절대 금지: 다른 모듈의 *IMPL* 모듈에 의존
-//  implementation project(':modules:user:user-impl')
-
-//  *** 절대 준수: 다른 모듈의 *API* 모듈에 의존
     implementation project(':sprout:global')
+    implementation project(':sprout:web-api')
+
+    // Embedded Tomcat
+    implementation 'org.apache.tomcat.embed:tomcat-embed-core:11.0.0-M21'
 }

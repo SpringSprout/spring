@@ -21,7 +21,7 @@ public class EnvironmentImpl implements Environment {
     }
 
     private void loadProperties(String fileName) {
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream(fileName)) {
+        try (InputStream input = this.getClass().getClassLoader().getResourceAsStream(fileName)) {
             if (input == null) {
                 return;
             }

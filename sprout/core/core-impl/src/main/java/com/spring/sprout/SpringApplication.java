@@ -7,7 +7,7 @@ import com.spring.sprout.io.ResourcePatternResolver;
 
 public class SpringApplication {
 
-    private static final String DATA_CONFIG_BASE_PACKAGE = "com.spring.sprout.data";
+    private static final String DATA_CONFIG_BASE_PACKAGE = "com.spring.sprout";
 
     public static ApplicationContext run(Class<?> mainClass) {
 
@@ -16,7 +16,7 @@ public class SpringApplication {
 
         ApplicationContext context = new ApplicationContext(environment, scanner);
 
-        context.registerSingleton("environment", environment); // 수동 등록
+        context.registerSingleton("environment", environment);
 
         try {
             String basePackage = environment.getProperty("scan.base-package");
@@ -27,6 +27,7 @@ public class SpringApplication {
             context.scan(basePackage);
             context.scan(DATA_CONFIG_BASE_PACKAGE);
             context.refresh();
+            Object webServer = context.getBean("WebServer");
             return context;
         } catch (Exception e) {
             e.printStackTrace();
