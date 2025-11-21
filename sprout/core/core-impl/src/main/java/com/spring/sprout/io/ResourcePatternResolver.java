@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
@@ -85,20 +86,20 @@ public class ResourcePatternResolver {
     private void findClassResourcesInJar(String path, URL resourceUrl, Set<Resource> result)
         throws IOException {
         URLConnection con = resourceUrl.openConnection();
-        if (con instanceof JarURLConnection) {
-            JarURLConnection jarCon = (JarURLConnection) con;
-            jarCon.setUseCaches(false);
-            try (JarFile jarFile = jarCon.getJarFile()) {
-                Enumeration<JarEntry> entries = jarFile.entries();
 
-                while (entries.hasMoreElements()) {
-                    JarEntry entry = entries.nextElement();
-                    String entryName = entry.getName();
-                    if (entryName.startsWith(path) && entryName.endsWith(".class")) {
-                        result.add(new Resource(entryName, this.classLoader));
-                    }
-                }
-            }
+        if (!(con instanceof JarURLConnection)) {
+            return;
+        }
+
+        JarURLConnection jarCon = (JarURLConnection) con;
+        jarCon.setUseCaches(false);
+
+        try (JarFile jarFile = jarCon.getJarFile()) {
+            Collections.list(jarFile.entries()).stream()
+                .map(JarEntry::getName)
+                .filter(name -> name.startsWith(path) && name.endsWith(".class"))
+                .map(name -> new Resource(name, this.classLoader))
+                .forEach(result::add);
         }
     }
 }
