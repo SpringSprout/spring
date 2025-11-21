@@ -23,7 +23,10 @@ public enum ErrorMessage {
     BEAN_CREATION_FAILED("빈 생성에 실패했습니다."),
 
     // 생성자 오류
-    NOT_UNIQUE_AUTOWIRED("Autowired 생성자는 하나만 허용됩니다.");
+    NOT_UNIQUE_AUTOWIRED("Autowired 생성자는 하나만 허용됩니다."),
+
+    // DataLayer 오류
+    SQL_EXECUTION_FILED("SQL 실행 중 오류 발생");
 
     private final String message;
 
