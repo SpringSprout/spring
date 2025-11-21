@@ -1,12 +1,10 @@
 package com.exam.app;
 
-import com.spring.sprout.context.ApplicationContext;
+import com.exam.app.domain.Product;
 import com.spring.sprout.SpringApplication;
+import com.spring.sprout.context.ApplicationContext;
 import com.spring.sprout.data.config.JdbcTemplate;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import javax.sql.DataSource;
+import java.util.List;
 
 public class ExamApplication {
 

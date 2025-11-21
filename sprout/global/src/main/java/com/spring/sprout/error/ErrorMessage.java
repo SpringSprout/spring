@@ -1,6 +1,7 @@
 package com.spring.sprout.error;
 
 public enum ErrorMessage {
+    // -- core --
     // 빈 오류
     NO_BEAN_FOUND_WITH_NAME("해당 이름을 가진 빈은 존재하지 않습니다."),
     NO_BEAN_FOUND_WITH_TYPE("해당 타입을 가진 빈은 존재하지 않습니다."),
@@ -25,8 +26,12 @@ public enum ErrorMessage {
     // 생성자 오류
     NOT_UNIQUE_AUTOWIRED("Autowired 생성자는 하나만 허용됩니다."),
 
-    // DataLayer 오류
-    SQL_EXECUTION_FILED("SQL 실행 중 오류 발생");
+
+    // -- data --
+    SQL_EXECUTION_FILED("SQL 실행 중 오류 발생"),
+
+    // 객체 매핑 실패
+    ENTITY_MAPPING_FILED("객체 매핑에 실패했습니다.");
 
     private final String message;
 
