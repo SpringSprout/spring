@@ -9,7 +9,6 @@ public class SpringApplication {
 
     private static final String DATA_CONFIG_BASE_PACKAGE = "com.spring.sprout";
 
-
     public static ApplicationContext run(Class<?> mainClass) {
         printBanner();
         EnvironmentImpl environment = new EnvironmentImpl();
@@ -29,6 +28,7 @@ public class SpringApplication {
             context.scan(DATA_CONFIG_BASE_PACKAGE);
             context.refresh();
             startWebServer(context);
+            printAllThreads();
             System.out.println("Spring Application Started Successfully");
             return context;
         } catch (Exception e) {
@@ -46,6 +46,13 @@ public class SpringApplication {
             webServer.stop();
             System.out.println(">> WebServer Stopped Successfully.");
         }));
+    }
+
+    private static void printAllThreads() {
+        Thread.getAllStackTraces().keySet().forEach(thread ->
+            System.out.println(
+                "Thread: " + thread.getName() + " (Daemon: " + thread.isDaemon() + ")")
+        );
     }
 
     private static void printBanner() {

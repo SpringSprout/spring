@@ -5,7 +5,9 @@ import com.spring.sprout.web.api.WebServer;
 import java.io.File;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
+import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
+import org.apache.coyote.AbstractProtocol;
 
 
 @Component
@@ -18,8 +20,18 @@ public class TomcatWebServer implements WebServer {
     public TomcatWebServer() {
         Tomcat tomcat = new Tomcat();
         tomcat.setPort(PORT);
-        tomcat.getConnector();
+        Connector connector = tomcat.getConnector();
+        AbstractProtocol<?> protocol = (AbstractProtocol<?>) connector.getProtocolHandler();
+
+        // 최대 스레드 개수
+        protocol.setMaxThreads(50);
+        // 최소 스레드 개수
+        protocol.setMinSpareThreads(10);
+        // 최대 대기열 크기
+        protocol.setAcceptCount(100);
+
         Context context = tomcat.addContext("", new File(".").getAbsolutePath());
+
         DispatcherServlet dispatcherServlet = new DispatcherServlet();
         Tomcat.addServlet(context, "dispatcher", dispatcherServlet);
         context.addServletMappingDecoded("/", "dispatcher");
