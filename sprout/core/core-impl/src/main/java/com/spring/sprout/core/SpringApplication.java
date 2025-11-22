@@ -40,6 +40,12 @@ public class SpringApplication {
     private static void startWebServer(ApplicationContext context) {
         WebServer webServer = context.getBean(WebServer.class);
         webServer.start();
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println(">> Shutdown Signal Detected. Stopping WebServer...");
+            webServer.stop();
+            System.out.println(">> WebServer Stopped Successfully.");
+        }));
     }
 
     private static void printBanner() {

@@ -30,9 +30,6 @@ public class TomcatWebServer implements WebServer {
     public void start() {
         try {
             tomcat.start();
-            Thread requestProcessingThread = new Thread(() -> tomcat.getServer().await());
-            requestProcessingThread.setDaemon(false);
-            requestProcessingThread.start();
         } catch (LifecycleException e) {
             throw new RuntimeException(e);
         }
