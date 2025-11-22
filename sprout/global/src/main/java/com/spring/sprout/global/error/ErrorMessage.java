@@ -23,11 +23,14 @@ public enum ErrorMessage {
     BEAN_CREATION_FAILED("빈 생성에 실패했습니다."),
 
     // 생성자 오류
-    NOT_UNIQUE_AUTOWIRED("Autowired 생성자는 하나만 허용됩니다.");
+    NOT_UNIQUE_AUTOWIRED("Autowired 생성자는 하나만 허용됩니다."),
+
+    // 웹 오류
+    NOT_FOUND("NOT FOUND");
 
     private final String message;
 
-    private ErrorMessage(String message) {
+    ErrorMessage(String message) {
         this.message = message;
     }
 
