@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import com.spring.sprout.core.context.EnvironmentImpl;
 import org.junit.jupiter.api.Test;
 
 public class EnvironmentTest {
@@ -14,7 +15,7 @@ public class EnvironmentTest {
         String configPath = "application.properties";
 
         // when
-        Environment environment = new Environment(configPath);
+        EnvironmentImpl environment = new EnvironmentImpl(configPath);
 
         // then
         assertEquals("SproutFramework", environment.getProperty("sprout.test.name"));
@@ -26,8 +27,8 @@ public class EnvironmentTest {
         String configPath = "non-existent-file.properties";
 
         // when
-        Environment environment = null;
-        environment = assertDoesNotThrow(() -> new Environment(configPath));
+        EnvironmentImpl environment = null;
+        environment = assertDoesNotThrow(() -> new EnvironmentImpl(configPath));
 
         // then
         assertNull(environment.getProperty("Blah-blah"));
@@ -37,7 +38,7 @@ public class EnvironmentTest {
     public void 존재하지_않는_키_조회_시_null_반환() {
         // given
         String configPath = "application.properties";
-        Environment environment = new Environment(configPath);
+        EnvironmentImpl environment = new EnvironmentImpl(configPath);
 
         // when
         String value = environment.getProperty("non-existent-key");

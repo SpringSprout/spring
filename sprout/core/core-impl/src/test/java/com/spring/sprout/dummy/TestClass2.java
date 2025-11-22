@@ -1,6 +1,6 @@
 package com.spring.sprout.dummy;
 
-import com.spring.sprout.annotation.Component;
+import com.spring.sprout.global.annotation.Component;
 
 @Component
 public class TestClass2 implements TestInterface {

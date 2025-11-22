@@ -6,7 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.spring.sprout.error.SpringException;
+import com.spring.sprout.core.io.Resource;
+import com.spring.sprout.global.error.SpringException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -48,7 +49,6 @@ public class ResourceTest {
 
         // then
         assertEquals("hello", content);
-
     }
 
     @Test
