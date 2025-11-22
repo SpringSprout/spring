@@ -1,8 +1,8 @@
 package com.spring.sprout.data.config;
 
-import com.spring.sprout.Environment;
-import com.spring.sprout.annotation.Autowired;
-import com.spring.sprout.annotation.Component;
+import com.spring.sprout.core.api.Environment;
+import com.spring.sprout.global.annotation.Autowired;
+import com.spring.sprout.global.annotation.Component;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -51,13 +51,13 @@ public class H2DataSource implements DataSource {
     }
 
     @Override
-    public void setLoginTimeout(int seconds) throws SQLException {
-        h2DataSource.setLoginTimeout(seconds);
+    public int getLoginTimeout() throws SQLException {
+        return h2DataSource.getLoginTimeout();
     }
 
     @Override
-    public int getLoginTimeout() throws SQLException {
-        return h2DataSource.getLoginTimeout();
+    public void setLoginTimeout(int seconds) throws SQLException {
+        h2DataSource.setLoginTimeout(seconds);
     }
 
     @Override

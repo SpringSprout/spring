@@ -24,4 +24,10 @@ subprojects {
     test {
         useJUnitPlatform()
     }
+
+
+    tasks.withType(Jar).configureEach {
+        duplicatesStrategy = DuplicatesStrategy.FAIL
+    }
+
 }

@@ -1,6 +1,6 @@
-package com.spring.sprout.beanfactory.support;
+package com.spring.sprout.core.beanfactory.support;
 
-import com.spring.sprout.annotation.Component;
+import com.spring.sprout.global.annotation.Component;
 
 public class BeanNameGenerator {
 

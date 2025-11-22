@@ -1,8 +1,8 @@
-package com.spring.sprout.context;
+package com.spring.sprout.core.context;
 
-import com.spring.sprout.Environment;
-import com.spring.sprout.error.ErrorMessage;
-import com.spring.sprout.error.SpringException;
+import com.spring.sprout.core.api.Environment;
+import com.spring.sprout.global.error.ErrorMessage;
+import com.spring.sprout.global.error.SpringException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;

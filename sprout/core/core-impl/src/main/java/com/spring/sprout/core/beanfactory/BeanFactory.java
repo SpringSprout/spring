@@ -1,13 +1,13 @@
-package com.spring.sprout.beanfactory;
+package com.spring.sprout.core.beanfactory;
 
-import static com.spring.sprout.error.ErrorMessage.NO_BEAN_FOUND_WITH_NAME;
-import static com.spring.sprout.error.ErrorMessage.NO_BEAN_FOUND_WITH_TYPE;
-import static com.spring.sprout.error.ErrorMessage.NO_UNIQUE_BEAN_FOUND_WITH_TYPE;
+import static com.spring.sprout.global.error.ErrorMessage.NO_BEAN_FOUND_WITH_NAME;
+import static com.spring.sprout.global.error.ErrorMessage.NO_BEAN_FOUND_WITH_TYPE;
+import static com.spring.sprout.global.error.ErrorMessage.NO_UNIQUE_BEAN_FOUND_WITH_TYPE;
 
-import com.spring.sprout.annotation.Autowired;
-import com.spring.sprout.error.ErrorMessage;
-import com.spring.sprout.error.SpringException;
-import com.spring.sprout.beanfactory.support.BeanNameGenerator;
+import com.spring.sprout.core.beanfactory.support.BeanNameGenerator;
+import com.spring.sprout.global.annotation.Autowired;
+import com.spring.sprout.global.error.ErrorMessage;
+import com.spring.sprout.global.error.SpringException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -17,9 +17,9 @@ import java.util.Set;
 
 public class BeanFactory {
 
-    private Map<String, Object> singletonObjects = new HashMap<>();
     private final Set<Class<?>> componentClasses = new HashSet<>();
     private final BeanNameGenerator beanNameGenerator = new BeanNameGenerator();
+    private Map<String, Object> singletonObjects = new HashMap<>();
 
     public void registerBeanClass(Class<?> clazz) {
         componentClasses.add(clazz);

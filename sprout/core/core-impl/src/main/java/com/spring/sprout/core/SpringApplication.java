@@ -1,9 +1,9 @@
-package com.spring.sprout;
+package com.spring.sprout.core;
 
-
-import com.spring.sprout.context.ApplicationContext;
-import com.spring.sprout.context.EnvironmentImpl;
-import com.spring.sprout.io.ResourcePatternResolver;
+import com.spring.sprout.core.context.ApplicationContext;
+import com.spring.sprout.core.context.EnvironmentImpl;
+import com.spring.sprout.core.io.ResourcePatternResolver;
+import com.spring.sprout.web.api.WebServer;
 
 public class SpringApplication {
 
@@ -27,7 +27,8 @@ public class SpringApplication {
             context.scan(basePackage);
             context.scan(DATA_CONFIG_BASE_PACKAGE);
             context.refresh();
-            Object webServer = context.getBean("WebServer");
+            WebServer webServer = context.getBean(WebServer.class);
+            webServer.start();
             return context;
         } catch (Exception e) {
             e.printStackTrace();

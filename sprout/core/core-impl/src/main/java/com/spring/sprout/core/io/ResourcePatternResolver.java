@@ -1,7 +1,7 @@
-package com.spring.sprout.io;
+package com.spring.sprout.core.io;
 
-import com.spring.sprout.error.ErrorMessage;
-import com.spring.sprout.error.SpringException;
+import com.spring.sprout.global.error.ErrorMessage;
+import com.spring.sprout.global.error.SpringException;
 import java.io.File;
 import java.io.IOException;
 import java.net.JarURLConnection;

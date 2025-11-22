@@ -1,7 +1,7 @@
 package com.spring.sprout.dummy.scan;
 
-import com.spring.sprout.annotation.Autowired;
-import com.spring.sprout.annotation.Component;
+import com.spring.sprout.global.annotation.Autowired;
+import com.spring.sprout.global.annotation.Component;
 
 @Component
 public class ScanService {

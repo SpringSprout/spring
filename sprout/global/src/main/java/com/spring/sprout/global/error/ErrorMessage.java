@@ -1,4 +1,4 @@
-package com.spring.sprout.error;
+package com.spring.sprout.global.error;
 
 public enum ErrorMessage {
     // 빈 오류
@@ -34,5 +34,4 @@ public enum ErrorMessage {
     public String getMessage() {
         return message;
     }
-
 }

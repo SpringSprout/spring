@@ -6,5 +6,5 @@ dependencies {
     implementation project(':sprout:web-api')
 
     // Embedded Tomcat
-    implementation 'org.apache.tomcat.embed:tomcat-embed-core:11.0.0-M21'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-core:11.0.12'
 }

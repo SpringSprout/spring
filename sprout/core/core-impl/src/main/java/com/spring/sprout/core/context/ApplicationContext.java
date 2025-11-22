@@ -1,12 +1,12 @@
-package com.spring.sprout.context;
+package com.spring.sprout.core.context;
 
 
-import com.spring.sprout.annotation.Component;
-import com.spring.sprout.beanfactory.BeanFactory;
-import com.spring.sprout.error.ErrorMessage;
-import com.spring.sprout.error.SpringException;
-import com.spring.sprout.io.Resource;
-import com.spring.sprout.io.ResourcePatternResolver;
+import com.spring.sprout.core.beanfactory.BeanFactory;
+import com.spring.sprout.core.io.Resource;
+import com.spring.sprout.core.io.ResourcePatternResolver;
+import com.spring.sprout.global.annotation.Component;
+import com.spring.sprout.global.error.ErrorMessage;
+import com.spring.sprout.global.error.SpringException;
 
 public class ApplicationContext extends BeanFactory {
 
