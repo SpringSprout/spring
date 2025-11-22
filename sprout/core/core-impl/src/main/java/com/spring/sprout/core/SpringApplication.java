@@ -3,7 +3,6 @@ package com.spring.sprout.core;
 import com.spring.sprout.core.context.ApplicationContext;
 import com.spring.sprout.core.context.EnvironmentImpl;
 import com.spring.sprout.core.io.ResourcePatternResolver;
-import com.spring.sprout.web.api.ServletWebServerFactory;
 import com.spring.sprout.web.api.WebServer;
 
 public class SpringApplication {
@@ -39,9 +38,7 @@ public class SpringApplication {
     }
 
     private static void startWebServer(ApplicationContext context) {
-        ServletWebServerFactory servletWebServerFactory = context.getBean(
-            ServletWebServerFactory.class);
-        WebServer webServer = servletWebServerFactory.getWebServer();
+        WebServer webServer = context.getBean(WebServer.class);
         webServer.start();
     }
 
