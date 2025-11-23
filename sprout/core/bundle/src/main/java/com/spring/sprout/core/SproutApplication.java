@@ -5,7 +5,7 @@ import com.spring.sprout.core.context.EnvironmentImpl;
 import com.spring.sprout.core.io.ResourcePatternResolver;
 import com.spring.sprout.web.api.WebServer;
 
-public class SpringApplication {
+public class SproutApplication {
 
     private static final String DATA_CONFIG_BASE_PACKAGE = "com.spring.sprout";
 
@@ -58,16 +58,16 @@ public class SpringApplication {
 
     private static void printBanner() {
         System.out.println("""
-              __  __       _____          _                  _____            _             
-             |  \\/  |     / ____|        | |                / ____|          (_)            
-             | \\  / |_  _| |    _   _ ___| |_ ___  _ __ ___| (___  _ __  _ __ _ _ __   __ _ 
-             | |\\/| | | | | |   | | | / __| __/ _ \\| '_ ` _ \\\\___ \\| '_ \\| '__| | '_ \\ / _` |
-             | |  | | |_| | |___| |_| \\__ \\ || (_) | | | | | |___) | |_) | |  | | | | | (_| |
-             |_|  |_|\\__, |\\_____\\__,_|___/\\__\\___/|_| |_| |_|____/| .__/|_|  |_|_| |_|\\__, |
-                      __/ |                                        | |                  __/ |
-                     |___/                                         |_|                 |___/ 
+              _____                  _
+             / ____|                 | |
+            | (___  _ __  _ __ ___  _| |_
+             \\___ \\| '_ \\| '__/ _ \\| | __|
+             ____) | |_) | | | (_) | | |_
+            |_____/| .__/|_|  \\___/ \\__|
+                   | |
+                   |_|
             
-             :: MyCustomSpring ::             (v1.0.0)
+             :: Sprout ::             (v1.0.0)
             """);
     }
 }

@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
     runtimeOnly 'com.h2database:h2:2.2.224'
-    implementation project(':springboot-starter-web')
+    implementation project(':sprout-starter-web')
 }
