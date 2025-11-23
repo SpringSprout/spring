@@ -3,6 +3,8 @@ package com.my.project.mvc;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 import com.my.project.domain.User;
+import com.my.project.dto.UserInfo;
+import com.my.project.service.UserService;
 import com.spring.sprout.JdbcTemplate;
 import com.spring.sprout.bundle.SproutApplication;
 import com.spring.sprout.bundle.context.SproutApplicationContext;
@@ -27,18 +29,18 @@ public class UserServiceTest {
             "CREATE TABLE user (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), age INT)",
             ps -> ps.execute());
     }
-    
+
     @Test
     public void 정상_가입_MySQL_연동() {
         // given
-        User user = new User(1, "dongju", 25);
+        UserInfo user = new UserInfo(6, "dongju", 25);
 
         // when
         userService.join(user);
 
         // then
-        User result = userService.find(1);
+        UserInfo result = userService.findInfo(6);
 
-        assertThat(result.getName()).isEqualTo("dongju");
+        assertThat(result.name()).isEqualTo("dongju");
     }
 }

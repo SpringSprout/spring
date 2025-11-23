@@ -1,8 +1,10 @@
 package com.my.project.domain;
 
 import com.spring.sprout.global.annotation.db.Entity;
+import lombok.Getter;
 
-@Entity
+@Entity(table = "users")
+@Getter
 public class User {
 
     private int id;
@@ -12,22 +14,8 @@ public class User {
     public User() {
     }
 
-    public User(int id, String name, int age) {
-        this.id = id;
+    public User(String name, int age) {
         this.name = name;
         this.age = age;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    @Override
-    public String toString() {
-        return "User{name='" + name + "', age=" + age + "}";
     }
 }

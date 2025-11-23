@@ -28,6 +28,8 @@ public class RepositoryHandler implements InvocationHandler {
             return null;
         } else if (methodName.equals("findById")) {
             return findById(args[0]);
+        } else if (methodName.equals("findAll")) {
+            return findAll();
         }
         return null;
     }
@@ -75,5 +77,11 @@ public class RepositoryHandler implements InvocationHandler {
         String tableName = getTableName();
         String sql = "SELECT * FROM " + tableName + " WHERE id = ?";
         return jdbcTemplate.query(sql, entityType, id).getFirst();
+    }
+
+    private Object findAll() {
+        String tableName = getTableName();
+        String sql = "SELECT * FROM " + tableName;
+        return jdbcTemplate.query(sql, entityType);
     }
 }
