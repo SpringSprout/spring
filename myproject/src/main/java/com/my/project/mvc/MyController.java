@@ -1,5 +1,6 @@
 package com.my.project.mvc;
 
+import com.my.project.mvc.dto.MemberInfo;
 import com.spring.sprout.global.annotation.controller.Controller;
 import com.spring.sprout.global.annotation.controller.GetMapping;
 import com.spring.sprout.global.annotation.controller.PostMapping;
@@ -14,8 +15,8 @@ public class MyController {
     MyService myService;
 
     @GetMapping("/get")
-    public void handleGet() {
-        myService.get();
+    public MemberInfo handleGet() {
+        return myService.get();
     }
 
     @PostMapping("/post")
