@@ -99,20 +99,25 @@ public class DefaultBeanFactory implements BeanFactory {
     private Object createBean(Class<?> clazz) {
         String beanName = beanNameGenerator.determineBeanName(clazz);
 
-        if (singletonObjects.containsKey(beanName)) {
+        if (singletonObjects.containsKey(beanName)) { // 이미 있는지 확인
             return singletonObjects.get(beanName);
         }
 
         try {
-            Object instance = instantiateBean(clazz);
-            injectFields(instance);
-            if (!BeanPostProcessor.class.isAssignableFrom(clazz)) {
-                instance = applyBeanPostProcessors(instance, beanName);
+            Object instance = instantiateBean(clazz); // 새로운 인스턴스 생성
+            singletonObjects.put(beanName, instance); // 미리 등록
+            injectFields(instance); // 의존성 주입
+            if (BeanPostProcessor.class.isAssignableFrom(clazz)) { // 후처리기 자신일 경우 후처리 적용 안함
+                return instance;
             }
-            Object exposedObject = applyBeanPostProcessors(instance, beanName);
-            singletonObjects.put(beanName, exposedObject);
-            return instance;
+            Object exposedObject = applyBeanPostProcessors(instance, beanName); // 후처리 적용
+            if (exposedObject != instance) { // 프록시가 원본과 다르면 갱신
+                singletonObjects.put(beanName, exposedObject);
+            }
+            return exposedObject; // 프록시 또는 원본 반환
+
         } catch (Exception e) {
+            singletonObjects.remove(beanName);
             throw new SpringException(ErrorMessage.BEAN_CREATION_FAILED);
         }
     }
@@ -142,9 +147,13 @@ public class DefaultBeanFactory implements BeanFactory {
         // 컨테이너에 등록된 빈들 중에서 BeanPostProcessor 구현체를 찾음
         for (Class<?> clazz : componentClasses) {
             if (BeanPostProcessor.class.isAssignableFrom(clazz)) {
-                Object processor = instantiateBean(clazz);
-                injectFields(processor);
-                this.beanPostProcessors.add((BeanPostProcessor) processor);
+                try {
+                    BeanPostProcessor processor = (BeanPostProcessor) getBean(clazz);
+                    this.beanPostProcessors.add(processor);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
         return this.beanPostProcessors;
