@@ -56,8 +56,12 @@ public class ResourcePatternResolver {
             URL resourceUrl = resources.nextElement();
             String protocol = resourceUrl.getProtocol();
             if ("file".equals(protocol)) {
-                File directory = new File(resourceUrl.getFile());
-                findClassResourcesInDirectory(path, directory, result);
+                try {
+                    File directory = new File(resourceUrl.toURI());
+                    findClassResourcesInDirectory(path, directory, result);
+                } catch (java.net.URISyntaxException e) {
+                    throw new IOException(e);
+                }
             } else if ("jar".equals(protocol)) {
                 findClassResourcesInJar(path, resourceUrl, result);
             }

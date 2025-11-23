@@ -6,11 +6,13 @@ public class BeanNameGenerator {
 
     public String determineBeanName(Class<?> clazz) {
         Component component = clazz.getAnnotation(Component.class);
-        String value = component.value();
-
-        if (value != null && !value.isEmpty()) {
-            return value;
+        if (component != null) {
+            String value = component.value();
+            if (value != null && !value.isEmpty()) {
+                return value;
+            }
         }
+
         String className = clazz.getSimpleName();
         return decapitalize(className);
     }

@@ -1,4 +1,4 @@
-package com.my.project;
+package com.my.project.mvc;
 
 import com.spring.sprout.global.annotation.controller.Controller;
 import com.spring.sprout.global.annotation.controller.GetMapping;

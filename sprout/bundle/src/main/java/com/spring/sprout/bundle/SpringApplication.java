@@ -1,4 +1,4 @@
-package com.spring.sprout.core;
+package com.spring.sprout.bundle;
 
 import com.spring.sprout.core.context.ApplicationContext;
 import com.spring.sprout.core.context.EnvironmentImpl;
@@ -9,7 +9,7 @@ public class SpringApplication {
 
     private static final String DATA_CONFIG_BASE_PACKAGE = "com.spring.sprout";
 
-    public static ApplicationContext run(Class<?> mainClass) {
+    public static void run(Class<?> mainClass) {
         printBanner();
         EnvironmentImpl environment = new EnvironmentImpl();
         ResourcePatternResolver scanner = new ResourcePatternResolver();
@@ -30,7 +30,6 @@ public class SpringApplication {
             startWebServer(context);
             printAllThreads();
             System.out.println("Spring Application Started Successfully");
-            return context;
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Spring Application Start Failed", e);
