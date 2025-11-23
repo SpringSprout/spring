@@ -19,8 +19,8 @@ import java.util.Map;
 public class DispatcherServlet extends HttpServlet {
 
     private final BeanFactory beanFactory;
-    private final HashMap<String, Handler> handlerMapping = new HashMap<>();
     ObjectMapper objectMapper = new ObjectMapper();
+    private Map<HandlerKey, Handler> handlerMapping = new HashMap<>();
 
     public DispatcherServlet(BeanFactory beanFactory) {
         this.beanFactory = beanFactory;
@@ -42,14 +42,19 @@ public class DispatcherServlet extends HttpServlet {
 
             for (Method method : clazz.getMethods()) {
                 String url = null;
+                RequestMethod requestMethod = null; // 메서드 타입 저장 변수
+
                 if (method.isAnnotationPresent(GetMapping.class)) {
                     url = method.getAnnotation(GetMapping.class).value();
+                    requestMethod = RequestMethod.GET;
                 } else if (method.isAnnotationPresent(PostMapping.class)) {
                     url = method.getAnnotation(PostMapping.class).value();
+                    requestMethod = RequestMethod.POST;
                 }
 
-                if (url != null) {
-                    handlerMapping.put(url, (request, response) -> {
+                if (url != null && requestMethod != null) {
+                    HandlerKey handlerKey = new HandlerKey(url, requestMethod);
+                    handlerMapping.put(handlerKey, (request, response) -> {
                         Object result = method.invoke(bean);
 
                         response.setContentType("application/json;charset=UTF-8");
@@ -67,8 +72,13 @@ public class DispatcherServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        String path = req.getRequestURI();
-        Handler handler = handlerMapping.get(path);
+        String requestUri = req.getRequestURI();
+        String requestMethodString = req.getMethod();
+        HandlerKey handlerKey = new HandlerKey(
+            requestUri,
+            RequestMethod.valueOf(requestMethodString)
+        );
+        Handler handler = handlerMapping.get(handlerKey);
 
         if (handler == null) {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
