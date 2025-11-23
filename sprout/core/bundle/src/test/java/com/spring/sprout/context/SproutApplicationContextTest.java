@@ -6,9 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.spring.sprout.core.context.ApplicationContext;
-import com.spring.sprout.core.context.EnvironmentImpl;
-import com.spring.sprout.core.io.ResourcePatternResolver;
+import com.spring.sprout.bundle.context.EnvironmentImpl;
+import com.spring.sprout.bundle.context.SproutApplicationContext;
+import com.spring.sprout.bundle.io.ResourcePatternResolver;
 import com.spring.sprout.dummy.TestClass1;
 import com.spring.sprout.dummy.TestClass2;
 import com.spring.sprout.dummy.UniqueClass;
@@ -18,17 +18,17 @@ import com.spring.sprout.global.error.ErrorMessage;
 import com.spring.sprout.global.error.SpringException;
 import org.junit.jupiter.api.Test;
 
-public class ApplicationContextTest {
+public class SproutApplicationContextTest {
 
     private final TestClass1 testClass1 = new TestClass1();
     private final TestClass2 testClass2 = new TestClass2();
     private final UniqueClass uniqueClass = new UniqueClass();
-    private ApplicationContext context;
+    private SproutApplicationContext context;
 
     @Test
     public void 패키지_스캔_후_빈_등록_및_조회() {
         // given
-        ApplicationContext context = new ApplicationContext(new EnvironmentImpl(),
+        SproutApplicationContext context = new SproutApplicationContext(new EnvironmentImpl(),
             new ResourcePatternResolver());
         String scanPackage = "com.spring.sprout.dummy.scan";
 
@@ -51,7 +51,7 @@ public class ApplicationContextTest {
     @Test
     public void 스캔_대상이_아닌_클래스_빈_등록_안됨() {
         // given
-        ApplicationContext context = new ApplicationContext(new EnvironmentImpl(),
+        SproutApplicationContext context = new SproutApplicationContext(new EnvironmentImpl(),
             new ResourcePatternResolver());
         String scanPackage = "com.spring.sprout.dummy.scan";
 
@@ -69,7 +69,7 @@ public class ApplicationContextTest {
     @Test
     public void 스캔된_빈들_사이의_의존성_주입_확인() {
         // given
-        ApplicationContext context = new ApplicationContext(new EnvironmentImpl(),
+        SproutApplicationContext context = new SproutApplicationContext(new EnvironmentImpl(),
             new ResourcePatternResolver());
         String scanPackage = "com.spring.sprout.dummy.scan";
 
@@ -91,7 +91,7 @@ public class ApplicationContextTest {
     @Test
     public void 스캔된_빈은_싱글톤으로_관리된다() {
         // given
-        ApplicationContext context = new ApplicationContext(new EnvironmentImpl(),
+        SproutApplicationContext context = new SproutApplicationContext(new EnvironmentImpl(),
             new ResourcePatternResolver());
         String scanPackage = "com.spring.sprout.dummy.scan";
 

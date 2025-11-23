@@ -6,7 +6,9 @@ dependencies {
     api project(':sprout:global')
 
     // [Implementation] 런타임에 실제 기능을 수행할 구현체들 (내부적으로만 사용)
-    implementation project(':sprout:core-api')
     implementation project(':sprout:web-api')
+    implementation project(':sprout:web-impl')
+
+    implementation project(':sprout:core-api')
     implementation project(':sprout:data-impl')
 }

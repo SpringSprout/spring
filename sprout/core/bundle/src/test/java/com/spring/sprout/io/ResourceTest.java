@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.spring.sprout.core.io.Resource;
+import com.spring.sprout.bundle.io.Resource;
 import com.spring.sprout.global.error.SpringException;
 import java.io.BufferedReader;
 import java.io.File;

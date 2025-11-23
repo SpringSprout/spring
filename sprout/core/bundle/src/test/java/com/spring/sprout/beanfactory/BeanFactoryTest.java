@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.spring.sprout.core.beanfactory.BeanFactory;
+import com.spring.sprout.bundle.beanfactory.BeanFactory;
 import com.spring.sprout.dummy.TestClass1;
 import com.spring.sprout.dummy.TestClass2;
 import com.spring.sprout.dummy.TestInterface;

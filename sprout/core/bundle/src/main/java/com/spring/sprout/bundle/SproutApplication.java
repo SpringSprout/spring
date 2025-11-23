@@ -1,21 +1,21 @@
-package com.spring.sprout.core;
+package com.spring.sprout.bundle;
 
-import com.spring.sprout.core.context.ApplicationContext;
-import com.spring.sprout.core.context.EnvironmentImpl;
-import com.spring.sprout.core.io.ResourcePatternResolver;
+import com.spring.sprout.bundle.context.EnvironmentImpl;
+import com.spring.sprout.bundle.context.SproutApplicationContext;
+import com.spring.sprout.bundle.io.ResourcePatternResolver;
 import com.spring.sprout.web.api.WebServer;
 
 public class SproutApplication {
 
     private static final String CONFIG_BASE_PACKAGE = "com.spring.sprout";
 
-    public static ApplicationContext run(Class<?> mainClass) {
+    public static SproutApplicationContext run(Class<?> mainClass) {
         printBanner();
         EnvironmentImpl environment = new EnvironmentImpl();
         ResourcePatternResolver scanner = new ResourcePatternResolver();
 
-        ApplicationContext context = new ApplicationContext(environment, scanner);
-
+        SproutApplicationContext context = new SproutApplicationContext(scanner);
+        context.registerSingleton("beanFactory", context);
         context.registerSingleton("environment", environment);
 
         try {
@@ -38,8 +38,9 @@ public class SproutApplication {
         return context;
     }
 
-    private static void startWebServer(ApplicationContext context) {
+    private static void startWebServer(SproutApplicationContext context) {
         WebServer webServer = context.getBean(WebServer.class);
+        webServer.init();
         webServer.start();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -61,7 +62,7 @@ public class SproutApplication {
               _____                  _
              / ____|                 | |
             | (___  _ __  _ __ ___  _| |_
-             \\___ \\| '_ \\| '__/ _ \\| | __|
+            \\___ \\| '_ \\| '__/ _ \\| | __|
              ____) | |_) | | | (_) | | |_
             |_____/| .__/|_|  \\___/ \\__|
                    | |

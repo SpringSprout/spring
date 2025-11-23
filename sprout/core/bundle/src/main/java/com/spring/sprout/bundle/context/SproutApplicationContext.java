@@ -1,19 +1,17 @@
-package com.spring.sprout.core.context;
+package com.spring.sprout.bundle.context;
 
 
-import com.spring.sprout.core.beanfactory.BeanFactory;
-import com.spring.sprout.core.io.Resource;
-import com.spring.sprout.core.io.ResourcePatternResolver;
+import com.spring.sprout.bundle.beanfactory.DefaultBeanFactory;
+import com.spring.sprout.bundle.io.Resource;
+import com.spring.sprout.bundle.io.ResourcePatternResolver;
 import com.spring.sprout.global.error.ErrorMessage;
 import com.spring.sprout.global.error.SpringException;
 
-public class ApplicationContext extends BeanFactory {
+public class SproutApplicationContext extends DefaultBeanFactory {
 
-    private final EnvironmentImpl environment;
     private final ResourcePatternResolver scanner;
 
-    public ApplicationContext(EnvironmentImpl environment, ResourcePatternResolver scanner) {
-        this.environment = environment;
+    public SproutApplicationContext(ResourcePatternResolver scanner) {
         this.scanner = scanner;
     }
 
@@ -45,8 +43,9 @@ public class ApplicationContext extends BeanFactory {
     private String convertPathToClassName(String path) {
         return path.replace(".class", "").replace("/", ".");
     }
-    
+
     public ClassLoader getClassLoader() {
         return this.scanner.getClassLoader();
     }
 }
+
