@@ -1,8 +1,8 @@
 package com.spring.sprout.data.support;
 
+import com.spring.sprout.bundle.BeanPostProcessor;
 import com.spring.sprout.data.tranaction.TransactionInterceptor;
 import com.spring.sprout.data.tranaction.TransactionManager;
-import com.spring.sprout.core.BeanPostProcessor;
 import com.spring.sprout.global.annotation.Autowired;
 import com.spring.sprout.global.annotation.Component;
 import com.spring.sprout.global.annotation.Transactional;

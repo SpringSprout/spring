@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spring.sprout.bundle.beanfactory.BeanFactory;
+import com.spring.sprout.bundle.beanfactory.DefaultBeanFactory;
 import com.spring.sprout.dummy.TestClass1;
 import com.spring.sprout.dummy.TestClass2;
 import com.spring.sprout.dummy.TestInterface;
@@ -18,11 +19,11 @@ import org.junit.jupiter.api.Test;
 
 public class BeanFactoryTest {
 
-    private BeanFactory beanFactory;
+    private DefaultBeanFactory beanFactory;
 
     @BeforeEach
     public void setUp() throws Exception {
-        beanFactory = new BeanFactory();
+        beanFactory = new DefaultBeanFactory();
 
         beanFactory.registerBeanClass(TestClass1.class);
         beanFactory.registerBeanClass(TestClass2.class);

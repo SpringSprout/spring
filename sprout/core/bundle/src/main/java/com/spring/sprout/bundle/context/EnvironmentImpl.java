@@ -1,7 +1,6 @@
 package com.spring.sprout.bundle.context;
 
 import com.spring.sprout.bundle.api.Environment;
-import com.spring.sprout.core.Environment;
 import com.spring.sprout.global.error.ErrorMessage;
 import com.spring.sprout.global.error.SpringException;
 import java.io.IOException;
