@@ -1,9 +1,11 @@
 package com.my.project.mvc;
 
+import com.my.project.mvc.dto.MemberInfo;
 import com.spring.sprout.global.annotation.controller.Controller;
 import com.spring.sprout.global.annotation.controller.GetMapping;
 import com.spring.sprout.global.annotation.controller.PostMapping;
 import com.spring.sprout.global.annotation.controller.RequestMapping;
+import java.util.List;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -13,13 +15,13 @@ public class MyController {
 
     MyService myService;
 
-    @GetMapping("/get")
-    public void handleGet() {
-        myService.get();
+    @GetMapping("/members")
+    public List<MemberInfo> getMembers() {
+        return myService.getMembers();
     }
 
-    @PostMapping("/post")
-    public void handlePost() {
-        myService.post();
+    @PostMapping("/register")
+    public void register() {
+        myService.register();
     }
 }
