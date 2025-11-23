@@ -36,9 +36,14 @@ public class ResourcePatternResolverTest {
             "com/spring/sprout/dummy/TestClass1.class",
             "com/spring/sprout/dummy/TestClass2.class",
             "com/spring/sprout/dummy/TestInterface.class",
-            "com/spring/sprout/dummy/UniqueClass.class"
+            "com/spring/sprout/dummy/UniqueClass.class",
+            "com/spring/sprout/dummy/scan/NotScanComponent.class",
+            "com/spring/sprout/dummy/scan/ScanComponent.class",
+            "com/spring/sprout/dummy/scan/ScanComponentWithName.class",
+            "com/spring/sprout/dummy/scan/ScanRepository.class",
+            "com/spring/sprout/dummy/scan/ScanService.class"
         );
-        assertEquals(4, resources.length);
+        assertEquals(9, resources.length);
         assertEquals(expectedPaths, actualPaths);
     }
 
