@@ -1,5 +1,6 @@
 package com.spring.sprout.data.config;
 
+import com.spring.sprout.data.support.DataSourceUtils;
 import com.spring.sprout.global.annotation.Autowired;
 import com.spring.sprout.global.annotation.Component;
 import com.spring.sprout.data.support.EntityMapper;
@@ -46,10 +47,10 @@ public class JdbcTemplate {
         PreparedStatement preparedStatement = null;
         try {
             // 1. 연결, SQL문 받기
-            connection = dataSource.getConnection();
+            connection = DataSourceUtils.getConnection(dataSource);
             preparedStatement = connection.prepareStatement(sql);
 
-            // 2. 파라미터 바인딩 추가
+            // 2. 파라미터 바인딩
             setParameters(preparedStatement, args);
 
             // 3. 콜백 실행
@@ -59,7 +60,18 @@ public class JdbcTemplate {
             e.printStackTrace();
             throw new SpringException(ErrorMessage.SQL_EXECUTION_FILED);
         } finally {
-            close(preparedStatement, connection);
+            closePreparedStatement(preparedStatement); // preparedStatement 해제
+            DataSourceUtils.releaseConnection(connection,
+                dataSource); // connection의 경우 DataSourceUtils에게 위임
+        }
+    }
+
+    private void closePreparedStatement(PreparedStatement preparedStatement) {
+        if (preparedStatement != null) {
+            try {
+                preparedStatement.close();
+            } catch (Exception e) {
+            }
         }
     }
 
@@ -69,21 +81,6 @@ public class JdbcTemplate {
             for (int i = 0; i < args.length; i++) {
                 ps.setObject(i + 1, args[i]);
             }
-        }
-    }
-
-    // 자원 해제
-    private void close(PreparedStatement preparedStatement, Connection connection) {
-        try {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-
         }
     }
 }

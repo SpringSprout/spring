@@ -7,7 +7,7 @@ import com.spring.sprout.web.api.WebServer;
 
 public class SpringApplication {
 
-    private static final String DATA_CONFIG_BASE_PACKAGE = "com.spring.sprout";
+    private static final String CONFIG_BASE_PACKAGE = "com.spring.sprout";
 
     public static ApplicationContext run(Class<?> mainClass) {
         printBanner();
@@ -25,7 +25,7 @@ public class SpringApplication {
                 basePackage = mainClass.getPackageName();
             }
             context.scan(basePackage);
-            context.scan(DATA_CONFIG_BASE_PACKAGE);
+            context.scan(CONFIG_BASE_PACKAGE);
             context.refresh();
             startWebServer(context);
             printAllThreads();

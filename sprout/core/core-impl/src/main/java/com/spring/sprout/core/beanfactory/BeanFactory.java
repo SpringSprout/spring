@@ -4,6 +4,7 @@ import static com.spring.sprout.global.error.ErrorMessage.NO_BEAN_FOUND_WITH_NAM
 import static com.spring.sprout.global.error.ErrorMessage.NO_BEAN_FOUND_WITH_TYPE;
 import static com.spring.sprout.global.error.ErrorMessage.NO_UNIQUE_BEAN_FOUND_WITH_TYPE;
 
+import com.spring.sprout.global.BeanPostProcessor;
 import com.spring.sprout.core.beanfactory.support.BeanNameGenerator;
 import com.spring.sprout.global.annotation.Autowired;
 import com.spring.sprout.global.annotation.Component;
@@ -12,8 +13,10 @@ import com.spring.sprout.global.error.SpringException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,6 +27,7 @@ public class BeanFactory {
     private final BeanNameGenerator beanNameGenerator = new BeanNameGenerator();
     private final Map<Class<? extends Annotation>, Boolean> componentAnnotationCache = new ConcurrentHashMap<>();
     private Map<String, Object> singletonObjects = new HashMap<>();
+    private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
 
     public void registerBeanClass(Class<?> clazz) {
         componentClasses.add(clazz);
@@ -51,12 +55,47 @@ public class BeanFactory {
 
         try {
             Object instance = instantiateBean(clazz);
-            singletonObjects.put(beanName, instance);
             injectFields(instance);
+            Object exposedObject = applyBeanPostProcessors(instance, beanName);
+            singletonObjects.put(beanName, exposedObject);
             return instance;
         } catch (Exception e) {
             throw new SpringException(ErrorMessage.BEAN_CREATION_FAILED);
         }
+    }
+
+    // [추가] 모든 후처리기를 돌면서 객체를 변환
+    private Object applyBeanPostProcessors(Object existingBean,
+        String beanName) throws Exception {
+        Object result = existingBean;
+
+        // 등록된 프로세서들을 하나씩 실행
+        for (BeanPostProcessor processor : getBeanPostProcessors()) {
+            Object current = processor.postProcessAfterInitialization(result, beanName);
+            if (current == null) {
+                return result;
+            }
+            result = current;
+        }
+        return result;
+    }
+
+    // [추가] BeanPostProcessor 타입의 빈들을 찾아서 리스트로 반환 (Lazy Loading)
+    private List<BeanPostProcessor> getBeanPostProcessors() throws Exception {
+        if (!this.beanPostProcessors.isEmpty()) {
+            return this.beanPostProcessors;
+        }
+
+        // 컨테이너에 등록된 빈들 중에서 BeanPostProcessor 구현체를 찾음
+        for (Class<?> clazz : componentClasses) {
+            if (BeanPostProcessor.class.isAssignableFrom(clazz)) {
+                // 재귀 호출 방지를 위해, 프로세서는 프록시 처리 안 되도록 주의
+                Object processor = instantiateBean(clazz);
+                injectFields(processor);
+                this.beanPostProcessors.add((BeanPostProcessor) processor);
+            }
+        }
+        return this.beanPostProcessors;
     }
 
     private Object instantiateBean(Class<?> clazz) throws Exception {

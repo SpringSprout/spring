@@ -9,4 +9,6 @@ dependencies {
     implementation project(':sprout:global')
     implementation project(':sprout:core-api')
     implementation project(':sprout:web-api')
+    implementation project(':sprout:data-api')
+
 }

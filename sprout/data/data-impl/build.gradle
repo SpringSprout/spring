@@ -8,6 +8,8 @@ dependencies {
 //  *** 절대 준수: 다른 모듈의 *API* 모듈에 의존
     implementation project(':sprout:global')
     implementation project(':sprout:core-api')
+    implementation project(':sprout:data-api')
 
     implementation('com.h2database:h2:2.2.224')
+    implementation('cglib:cglib:3.3.0')
 }
