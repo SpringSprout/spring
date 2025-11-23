@@ -1,6 +1,6 @@
 package com.spring.sprout.data.config;
 
-import com.spring.sprout.core.api.Environment;
+import com.spring.sprout.bundle.api.Environment;
 import com.spring.sprout.global.annotation.Autowired;
 import com.spring.sprout.global.annotation.Component;
 import java.io.PrintWriter;

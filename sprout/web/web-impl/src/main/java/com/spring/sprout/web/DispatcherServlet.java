@@ -1,5 +1,7 @@
 package com.spring.sprout.web;
 
+import com.spring.sprout.bundle.beanfactory.BeanFactory;
+import com.spring.sprout.global.annotation.Component;
 import com.spring.sprout.global.error.ErrorMessage;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -8,12 +10,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 
+@Component
 public class DispatcherServlet extends HttpServlet {
 
+    private final BeanFactory beanFactory;
     private final HashMap<String, Handler> handlerMapping = new HashMap<>();
 
-    public DispatcherServlet() {
-        // 나중에는 @Controller, @RequestMapping 스캔해서 채우게 바꿀 수 있음
+    public DispatcherServlet(BeanFactory beanFactory) {
+        this.beanFactory = beanFactory;
         registerHandlers();
     }
 

@@ -1,10 +1,10 @@
-package com.spring.sprout.core.beanfactory;
+package com.spring.sprout.bundle.beanfactory;
 
 import static com.spring.sprout.global.error.ErrorMessage.NO_BEAN_FOUND_WITH_NAME;
 import static com.spring.sprout.global.error.ErrorMessage.NO_BEAN_FOUND_WITH_TYPE;
 import static com.spring.sprout.global.error.ErrorMessage.NO_UNIQUE_BEAN_FOUND_WITH_TYPE;
 
-import com.spring.sprout.core.beanfactory.support.BeanNameGenerator;
+import com.spring.sprout.bundle.beanfactory.support.BeanNameGenerator;
 import com.spring.sprout.global.annotation.Autowired;
 import com.spring.sprout.global.annotation.Component;
 import com.spring.sprout.global.error.ErrorMessage;
@@ -18,12 +18,57 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class BeanFactory {
+public class DefaultBeanFactory implements BeanFactory {
 
-    private final Set<Class<?>> componentClasses = new HashSet<>();
+    protected final Set<Class<?>> componentClasses = new HashSet<>();
     private final BeanNameGenerator beanNameGenerator = new BeanNameGenerator();
     private final Map<Class<? extends Annotation>, Boolean> componentAnnotationCache = new ConcurrentHashMap<>();
     private Map<String, Object> singletonObjects = new HashMap<>();
+
+    @Override
+    public Object getBean(String name) {
+        if (singletonObjects.containsKey(name)) {
+            return singletonObjects.get(name);
+        }
+
+        for (Class<?> clazz : componentClasses) {
+            String candidateName = beanNameGenerator.determineBeanName(clazz);
+            if (candidateName.equals(name)) {
+                return createBean(clazz);
+            }
+        }
+        throw new SpringException(NO_BEAN_FOUND_WITH_NAME);
+    }
+
+    @Override
+    public <T> T getBean(Class<T> requiredType) {
+        Map<String, T> matchingBeans = getBeansOfType(requiredType);
+        if (!matchingBeans.isEmpty()) {
+            if (matchingBeans.size() > 1) {
+                throw new SpringException(NO_UNIQUE_BEAN_FOUND_WITH_TYPE);
+            }
+            return matchingBeans.values().iterator().next();
+        }
+
+        for (Class<?> clazz : componentClasses) {
+            if (requiredType.isAssignableFrom(clazz)) {
+                return (T) createBean(clazz);
+            }
+        }
+
+        throw new SpringException(NO_BEAN_FOUND_WITH_TYPE);
+    }
+
+    @Override
+    public <T> Map<String, T> getBeansOfType(Class<T> type) {
+        Map<String, T> result = new HashMap<>();
+        for (Map.Entry<String, Object> entry : singletonObjects.entrySet()) {
+            if (type.isInstance(entry.getValue())) {
+                result.put(entry.getKey(), (T) entry.getValue());
+            }
+        }
+        return result;
+    }
 
     public void registerBeanClass(Class<?> clazz) {
         componentClasses.add(clazz);
@@ -100,48 +145,6 @@ public class BeanFactory {
     }
 
 
-    public Object getBean(String name) {
-        if (singletonObjects.containsKey(name)) {
-            return singletonObjects.get(name);
-        }
-
-        for (Class<?> clazz : componentClasses) {
-            String candidateName = beanNameGenerator.determineBeanName(clazz);
-            if (candidateName.equals(name)) {
-                return createBean(clazz);
-            }
-        }
-        throw new SpringException(NO_BEAN_FOUND_WITH_NAME);
-    }
-
-    public <T> T getBean(Class<T> requiredType) {
-        Map<String, T> matchingBeans = getBeansOfType(requiredType);
-        if (!matchingBeans.isEmpty()) {
-            if (matchingBeans.size() > 1) {
-                throw new SpringException(NO_UNIQUE_BEAN_FOUND_WITH_TYPE);
-            }
-            return matchingBeans.values().iterator().next();
-        }
-
-        for (Class<?> clazz : componentClasses) {
-            if (requiredType.isAssignableFrom(clazz)) {
-                return (T) createBean(clazz);
-            }
-        }
-
-        throw new SpringException(NO_BEAN_FOUND_WITH_TYPE);
-    }
-
-    public <T> Map<String, T> getBeansOfType(Class<T> type) {
-        Map<String, T> result = new HashMap<>();
-        for (Map.Entry<String, Object> entry : singletonObjects.entrySet()) {
-            if (type.isInstance(entry.getValue())) {
-                result.put(entry.getKey(), (T) entry.getValue());
-            }
-        }
-        return result;
-    }
-
     /**
      * 클래스에 @Component가 있거나,
      *
@@ -201,3 +204,4 @@ public class BeanFactory {
         return false;
     }
 }
+

@@ -3,7 +3,7 @@ package com.spring.sprout.annotationtest;
 import com.spring.sprout.annotationtest.준비물.component.Component;
 import com.spring.sprout.annotationtest.준비물.component.TestClass1;
 import com.spring.sprout.annotationtest.준비물.notcomponent.TestClass2;
-import com.spring.sprout.core.beanfactory.BeanFactory;
+import com.spring.sprout.bundle.beanfactory.BeanFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

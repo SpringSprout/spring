@@ -17,8 +17,9 @@ public class TomcatWebServer implements WebServer {
 
     private final Tomcat tomcat;
 
-    public TomcatWebServer() {
-        Tomcat tomcat = new Tomcat();
+    public TomcatWebServer(DispatcherServlet dispatcherServlet) {
+        this.tomcat = new Tomcat();
+
         tomcat.setPort(PORT);
         Connector connector = tomcat.getConnector();
         AbstractProtocol<?> protocol = (AbstractProtocol<?>) connector.getProtocolHandler();
@@ -32,10 +33,8 @@ public class TomcatWebServer implements WebServer {
 
         Context context = tomcat.addContext("", new File(".").getAbsolutePath());
 
-        DispatcherServlet dispatcherServlet = new DispatcherServlet();
         Tomcat.addServlet(context, "dispatcher", dispatcherServlet);
         context.addServletMappingDecoded("/", "dispatcher");
-        this.tomcat = tomcat;
     }
 
     @Override
