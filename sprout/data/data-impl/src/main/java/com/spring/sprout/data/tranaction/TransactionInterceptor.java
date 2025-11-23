@@ -1,6 +1,6 @@
 package com.spring.sprout.data.tranaction;
 
-import com.spring.sprout.global.annotation.Transactional;
+import com.spring.sprout.global.annotation.db.Transactional;
 import java.lang.reflect.Method;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;

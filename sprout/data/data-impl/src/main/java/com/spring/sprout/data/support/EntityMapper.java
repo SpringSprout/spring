@@ -1,5 +1,7 @@
 package com.spring.sprout.data.support;
 
+import static com.spring.sprout.data.utils.TranslatorToSnake.translateToSnake;
+
 import com.spring.sprout.global.error.ErrorMessage;
 import com.spring.sprout.global.error.SpringException;
 import java.lang.reflect.Field;
@@ -43,15 +45,4 @@ public class EntityMapper<T> {
         }
     }
 
-    private String translateToSnake(String camelCase) {
-        StringBuilder result = new StringBuilder();
-        for (char c : camelCase.toCharArray()) {
-            if (Character.isUpperCase(c)) {
-                result.append('_').append(Character.toLowerCase(c));
-            } else {
-                result.append(c);
-            }
-        }
-        return result.toString();
-    }
 }

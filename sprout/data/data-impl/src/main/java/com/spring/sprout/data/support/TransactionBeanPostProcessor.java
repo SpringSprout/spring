@@ -5,7 +5,7 @@ import com.spring.sprout.data.tranaction.TransactionInterceptor;
 import com.spring.sprout.data.tranaction.TransactionManager;
 import com.spring.sprout.global.annotation.Autowired;
 import com.spring.sprout.global.annotation.Component;
-import com.spring.sprout.global.annotation.Transactional;
+import com.spring.sprout.global.annotation.db.Transactional;
 import java.lang.reflect.Method;
 import net.sf.cglib.proxy.Enhancer;
 
@@ -41,7 +41,7 @@ public class TransactionBeanPostProcessor implements BeanPostProcessor {
         enhancer.setSuperclass(clazz); // 원본 클래스 상속
         enhancer.setCallback(interceptor); // 메서드 호출 시 callBack 인터셉터 설정
 
-        Object proxy = enhancer.create();
+        Object proxy = enhancer.create(); // 프록시 생성
         copyFields(originalBean, proxy, clazz); // 프록시 객체 생성
         return proxy;
     }

@@ -22,7 +22,7 @@ public class SproutApplicationContext extends DefaultBeanFactory {
                 String className = convertPathToClassName(resource.getPath());
                 Class<?> clazz = getClassLoader().loadClass(className);
 
-                if (clazz.isAnnotation() || clazz.isInterface()) {
+                if (clazz.isAnnotation()) {
                     continue;
                 }
 

@@ -4,15 +4,21 @@ import static com.spring.sprout.global.error.ErrorMessage.NO_BEAN_FOUND_WITH_NAM
 import static com.spring.sprout.global.error.ErrorMessage.NO_BEAN_FOUND_WITH_TYPE;
 import static com.spring.sprout.global.error.ErrorMessage.NO_UNIQUE_BEAN_FOUND_WITH_TYPE;
 
+import com.spring.sprout.JdbcTemplate;
 import com.spring.sprout.bundle.BeanPostProcessor;
 import com.spring.sprout.bundle.beanfactory.support.BeanNameGenerator;
+import com.spring.sprout.data.support.RepositoryHandler;
 import com.spring.sprout.global.annotation.Autowired;
 import com.spring.sprout.global.annotation.Component;
+import com.spring.sprout.global.annotation.db.Repository;
 import com.spring.sprout.global.error.ErrorMessage;
 import com.spring.sprout.global.error.SpringException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Proxy;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -59,7 +65,6 @@ public class DefaultBeanFactory implements BeanFactory {
                 return (T) createBean(clazz);
             }
         }
-
         throw new SpringException(NO_BEAN_FOUND_WITH_TYPE);
     }
 
@@ -160,6 +165,14 @@ public class DefaultBeanFactory implements BeanFactory {
     }
 
     private Object instantiateBean(Class<?> clazz) throws Exception {
+        if (clazz.isInterface()) {
+            // @Repository가 붙은 인터페이스만 프록시로 생성
+            if (clazz.isAnnotationPresent(Repository.class)) {
+                return createRepositoryProxy(clazz);
+            }
+            // @Repository가 없는 인터페이스는 객체화 불가능하므로 에러 처리
+            throw new SpringException(ErrorMessage.BEAN_CREATION_FAILED);
+        }
         Constructor<?> targetConstructor = null;
         Constructor<?>[] declaredConstructors = clazz.getDeclaredConstructors();
         if (declaredConstructors.length == 1) {
@@ -186,6 +199,40 @@ public class DefaultBeanFactory implements BeanFactory {
         }
 
         return targetConstructor.newInstance(args);
+    }
+
+    private Object createRepositoryProxy(Class<?> repositoryInterface) {
+        // 1. JdbcTemplate 가져오기 (쿼리 실행용)
+        JdbcTemplate jdbcTemplate = getBean(JdbcTemplate.class);
+
+        // 2. 리포지토리가 다루는 엔티티 타입 알아내기 (Generic 분석)
+        Class<?> entityType = extractEntityType(repositoryInterface);
+
+        // 3. 핸들러 생성
+        RepositoryHandler handler = new RepositoryHandler(jdbcTemplate, entityType);
+
+        // 4. JDK Dynamic Proxy 생성
+        return Proxy.newProxyInstance(
+            repositoryInterface.getClassLoader(),
+            new Class[]{repositoryInterface},
+            handler
+        );
+    }
+
+    private Class<?> extractEntityType(Class<?> repositoryInterface) {
+        // 이 인터페이스가 상속받은 부모 인터페이스들(JpaRepository 등)을 검사
+        Type[] interfaces = repositoryInterface.getGenericInterfaces();
+
+        for (Type type : interfaces) {
+            if (type instanceof ParameterizedType) {
+                ParameterizedType pt = (ParameterizedType) type;
+                Type typeArgument = pt.getActualTypeArguments()[0]; // 제네릭 인자 중 첫 번째는 엔티티 타입
+                if (typeArgument instanceof Class) {
+                    return (Class<?>) typeArgument;
+                }
+            }
+        }
+        throw new SpringException(ErrorMessage.ENTITY_TYPE_NOT_FOUND);
     }
 
     private void injectFields(Object bean) throws IllegalAccessException {
