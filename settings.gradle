@@ -9,12 +9,10 @@ include ':myproject',
 
 project(':myproject').projectDir = file('myproject')
 
-project(':springboot-starter-web').projectDir = file('sprout/bundle')
-
 project(':sprout:global').projectDir = file('sprout/global')
 
 project(':sprout:core-api').projectDir = file('sprout/core/core-api')
-project(':sprout:core-impl').projectDir = file('sprout/core/core-impl')
+project(':springboot-starter-web').projectDir = file('sprout/core/bundle')
 
 project(':sprout:web-api').projectDir = file('sprout/web/web-api')
 project(':sprout:web-impl').projectDir = file('sprout/web/web-impl')
