@@ -9,4 +9,6 @@ public interface BeanFactory {
     <T> T getBean(Class<T> requiredType);
 
     <T> Map<String, T> getBeansOfType(Class<T> type);
+
+    Map<String, Object> getAllBeans();
 }

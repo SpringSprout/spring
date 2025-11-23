@@ -16,10 +16,16 @@ public class TomcatWebServer implements WebServer {
     private final int PORT = 8080;
 
     private final Tomcat tomcat;
+    private final DispatcherServlet dispatcherServlet;
 
     public TomcatWebServer(DispatcherServlet dispatcherServlet) {
         this.tomcat = new Tomcat();
+        this.dispatcherServlet = dispatcherServlet;
+    }
 
+    @Override
+    public void init() {
+        dispatcherServlet.init();
         tomcat.setPort(PORT);
         Connector connector = tomcat.getConnector();
         AbstractProtocol<?> protocol = (AbstractProtocol<?>) connector.getProtocolHandler();

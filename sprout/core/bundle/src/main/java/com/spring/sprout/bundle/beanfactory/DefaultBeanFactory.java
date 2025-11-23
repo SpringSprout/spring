@@ -70,6 +70,11 @@ public class DefaultBeanFactory implements BeanFactory {
         return result;
     }
 
+    @Override
+    public Map<String, Object> getAllBeans() {
+        return singletonObjects;
+    }
+
     public void registerBeanClass(Class<?> clazz) {
         componentClasses.add(clazz);
     }

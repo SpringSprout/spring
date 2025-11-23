@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class DispatcherServlet extends HttpServlet {
@@ -18,10 +19,15 @@ public class DispatcherServlet extends HttpServlet {
 
     public DispatcherServlet(BeanFactory beanFactory) {
         this.beanFactory = beanFactory;
+    }
+
+
+    public void init() {
         registerHandlers();
     }
 
     private void registerHandlers() {
+        Map<String, Object> allBeans = beanFactory.getAllBeans();
         handlerMapping.put("/", (request, response) -> {
             response.setContentType("text/plain;charset=UTF-8");
             response.getWriter().write("Hello from /");
