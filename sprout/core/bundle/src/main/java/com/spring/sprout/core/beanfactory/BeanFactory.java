@@ -56,6 +56,9 @@ public class BeanFactory {
         try {
             Object instance = instantiateBean(clazz);
             injectFields(instance);
+            if (!BeanPostProcessor.class.isAssignableFrom(clazz)) {
+                instance = applyBeanPostProcessors(instance, beanName);
+            }
             Object exposedObject = applyBeanPostProcessors(instance, beanName);
             singletonObjects.put(beanName, exposedObject);
             return instance;
