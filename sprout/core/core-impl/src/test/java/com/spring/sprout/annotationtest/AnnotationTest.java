@@ -1,5 +1,6 @@
 package com.spring.sprout.annotationtest;
 
+import com.spring.sprout.annotationtest.준비물.component.Component;
 import com.spring.sprout.annotationtest.준비물.component.TestClass1;
 import com.spring.sprout.annotationtest.준비물.notcomponent.TestClass2;
 import com.spring.sprout.core.beanfactory.BeanFactory;
@@ -16,10 +17,12 @@ public class AnnotationTest {
         TestClass1 testClass1 = new TestClass1();
 
         //when
-        boolean isComponent = beanFactory.hasComponentAnnotation(testClass1.getClass());
+        boolean isComponent1 = beanFactory.hasComponentAnnotation(testClass1.getClass());
+        boolean isComponent2 = beanFactory.hasComponentAnnotation(testClass1.getClass());
 
         //then
-        Assertions.assertTrue(isComponent);
+        Assertions.assertTrue(isComponent1);
+        Assertions.assertTrue(isComponent2);
     }
 
     @Test
@@ -28,7 +31,21 @@ public class AnnotationTest {
         TestClass2 testClass2 = new TestClass2();
 
         //when
-        boolean isComponent = beanFactory.hasComponentAnnotation(testClass2.getClass());
+        boolean isComponent1 = beanFactory.hasComponentAnnotation(testClass2.getClass());
+        boolean isComponent2 = beanFactory.hasComponentAnnotation(testClass2.getClass());
+
+        //then
+        Assertions.assertFalse(isComponent1);
+        Assertions.assertFalse(isComponent2);
+    }
+
+    @Test
+    public void isAnnotationPresent로는_메타어노테이션을_볼수없다() {
+        //given
+        TestClass1 testClass1 = new TestClass1();
+
+        //when
+        boolean isComponent = testClass1.getClass().isAnnotationPresent(Component.class);
 
         //then
         Assertions.assertFalse(isComponent);
