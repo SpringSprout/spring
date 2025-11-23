@@ -1,6 +1,6 @@
 package com.exam.app;
 
-import com.spring.sprout.SpringApplication;
+import com.spring.sprout.core.SpringApplication;
 
 public class ExamApplication {
 

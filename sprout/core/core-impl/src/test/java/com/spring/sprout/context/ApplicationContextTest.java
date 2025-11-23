@@ -6,22 +6,24 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.spring.sprout.core.context.ApplicationContext;
+import com.spring.sprout.core.context.EnvironmentImpl;
+import com.spring.sprout.core.io.ResourcePatternResolver;
 import com.spring.sprout.dummy.TestClass1;
 import com.spring.sprout.dummy.TestClass2;
 import com.spring.sprout.dummy.UniqueClass;
 import com.spring.sprout.dummy.scan.ScanRepository;
 import com.spring.sprout.dummy.scan.ScanService;
-import com.spring.sprout.error.ErrorMessage;
-import com.spring.sprout.error.SpringException;
-import com.spring.sprout.io.ResourcePatternResolver;
+import com.spring.sprout.global.error.ErrorMessage;
+import com.spring.sprout.global.error.SpringException;
 import org.junit.jupiter.api.Test;
 
 public class ApplicationContextTest {
 
-    private ApplicationContext context;
     private final TestClass1 testClass1 = new TestClass1();
     private final TestClass2 testClass2 = new TestClass2();
     private final UniqueClass uniqueClass = new UniqueClass();
+    private ApplicationContext context;
 
     @Test
     public void 패키지_스캔_후_빈_등록_및_조회() {

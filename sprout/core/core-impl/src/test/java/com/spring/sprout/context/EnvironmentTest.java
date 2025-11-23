@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import com.spring.sprout.core.context.EnvironmentImpl;
 import org.junit.jupiter.api.Test;
 
 public class EnvironmentTest {

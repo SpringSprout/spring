@@ -5,12 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.spring.sprout.core.beanfactory.BeanFactory;
 import com.spring.sprout.dummy.TestClass1;
 import com.spring.sprout.dummy.TestClass2;
 import com.spring.sprout.dummy.TestInterface;
 import com.spring.sprout.dummy.UniqueClass;
-import com.spring.sprout.error.ErrorMessage;
-import com.spring.sprout.error.SpringException;
+import com.spring.sprout.global.error.ErrorMessage;
+import com.spring.sprout.global.error.SpringException;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
