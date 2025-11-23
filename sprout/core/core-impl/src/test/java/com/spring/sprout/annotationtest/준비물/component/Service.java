@@ -1,12 +1,10 @@
-package com.spring.sprout.global.annotation;
+package com.spring.sprout.annotationtest.준비물.component;
 
-import java.lang.annotation.ElementType;
+import com.spring.sprout.global.annotation.Component;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
 @Component
-@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Service {
 

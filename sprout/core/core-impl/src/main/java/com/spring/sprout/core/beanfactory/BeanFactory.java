@@ -6,13 +6,17 @@ import static com.spring.sprout.global.error.ErrorMessage.NO_UNIQUE_BEAN_FOUND_W
 
 import com.spring.sprout.core.beanfactory.support.BeanNameGenerator;
 import com.spring.sprout.global.annotation.Autowired;
+import com.spring.sprout.global.annotation.Component;
 import com.spring.sprout.global.error.ErrorMessage;
 import com.spring.sprout.global.error.SpringException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 public class BeanFactory {
@@ -131,5 +135,50 @@ public class BeanFactory {
             }
         }
         return result;
+    }
+
+    /**
+     * 클래스에 @Component가 있거나,
+     *
+     * @Component를 포함한 메타 어노테이션(@Service 등)이 있는지 확인
+     */
+    public boolean hasComponentAnnotation(Class<?> clazz) {
+        // 1. 해당 클래스에 직접 @Component가 붙어있는지 확인
+        if (clazz.isAnnotationPresent(Component.class)) {
+            return true;
+        }
+
+        Queue<Annotation> queue = new LinkedList<>();
+        Set<Annotation> visited = new HashSet<>();
+        for (Annotation cur : clazz.getAnnotations()) {
+            Class<?> annotationClazz = cur.getClass();
+            if (annotationClazz.getPackageName().startsWith("java.lang") ||
+                annotationClazz.getPackageName().startsWith("kotlin")) {
+                continue;
+            }
+            queue.add(cur);
+            visited.add(cur);
+        }
+
+        while (!queue.isEmpty()) {
+            Class<? extends Annotation> cur = queue.poll().annotationType();
+
+            for (Annotation next : cur.getAnnotations()) {
+                if (visited.contains(next)) {
+                    continue;
+                }
+                Class<?> annotationClazz = next.annotationType();
+                if (annotationClazz.getPackageName().startsWith("java.lang") ||
+                    annotationClazz.getPackageName().startsWith("kotlin")) {
+                    continue;
+                }
+                if (annotationClazz.isAnnotationPresent(Component.class)) {
+                    return true;
+                }
+                queue.add(next);
+                visited.add(next);
+            }
+        }
+        return false;
     }
 }
