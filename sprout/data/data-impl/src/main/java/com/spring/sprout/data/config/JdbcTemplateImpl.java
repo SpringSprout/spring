@@ -1,10 +1,11 @@
 package com.spring.sprout.data.config;
 
+import com.spring.sprout.JdbcTemplate;
 import com.spring.sprout.data.support.DataSourceUtils;
 import com.spring.sprout.global.annotation.Autowired;
 import com.spring.sprout.global.annotation.Component;
 import com.spring.sprout.data.support.EntityMapper;
-import com.spring.sprout.data.support.StatementCallback;
+import com.spring.sprout.StatementCallback;
 import com.spring.sprout.global.error.ErrorMessage;
 import com.spring.sprout.global.error.SpringException;
 import java.sql.Connection;
@@ -16,16 +17,17 @@ import java.util.List;
 import javax.sql.DataSource;
 
 @Component
-public class JdbcTemplate {
+public class JdbcTemplateImpl implements JdbcTemplate {
 
     private final DataSource dataSource;
 
     @Autowired
-    public JdbcTemplate(DataSource dataSource) {
+    public JdbcTemplateImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     // 쿼리문 실행
+    @Override
     public <T> List<T> query(String sql, Class<T> clazz, Object... args) {
         EntityMapper<T> mapper = new EntityMapper<>(clazz);
 
@@ -42,6 +44,7 @@ public class JdbcTemplate {
     }
 
     // sql문과 콜백 실행
+    @Override
     public <T> T execute(String sql, StatementCallback<T> callback, Object... args) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;

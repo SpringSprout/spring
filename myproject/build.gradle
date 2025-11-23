@@ -6,3 +6,21 @@ dependencies {
     runtimeOnly 'com.h2database:h2:2.2.224'
     implementation project(':sprout-starter-web')
 }
+
+application {
+    mainClass = 'com.my.project.MyProjectApplication'
+
+    applicationDefaultJvmArgs = [
+            "--add-opens", "java.base/java.lang=ALL-UNNAMED",
+            "--add-opens", "java.base/java.lang.reflect=ALL-UNNAMED"
+    ]
+}
+
+test {
+    useJUnitPlatform()
+
+    jvmArgs(
+            "--add-opens", "java.base/java.lang=ALL-UNNAMED",
+            "--add-opens", "java.base/java.lang.reflect=ALL-UNNAMED"
+    )
+}

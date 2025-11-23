@@ -1,4 +1,4 @@
-package com.spring.sprout.data.support;
+package com.spring.sprout;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
