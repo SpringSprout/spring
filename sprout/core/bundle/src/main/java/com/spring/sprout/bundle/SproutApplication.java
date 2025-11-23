@@ -40,6 +40,7 @@ public class SproutApplication {
 
     private static void startWebServer(SproutApplicationContext context) {
         WebServer webServer = context.getBean(WebServer.class);
+        webServer.init();
         webServer.start();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
