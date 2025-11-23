@@ -1,9 +1,7 @@
 package com.exam.app.domain;
 
-import com.spring.sprout.annotation.Entity;
 import lombok.Getter;
 
-@Entity
 @Getter
 public class Product {
 
