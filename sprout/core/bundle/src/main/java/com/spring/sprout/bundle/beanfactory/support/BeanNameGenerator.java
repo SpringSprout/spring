@@ -1,4 +1,4 @@
-package com.spring.sprout.core.beanfactory.support;
+package com.spring.sprout.bundle.beanfactory.support;
 
 import com.spring.sprout.global.annotation.Component;
 

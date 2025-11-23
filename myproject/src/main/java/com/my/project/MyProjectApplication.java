@@ -1,6 +1,6 @@
 package com.my.project;
 
-import com.spring.sprout.core.SproutApplication;
+import com.spring.sprout.bundle.SproutApplication;
 
 public class MyProjectApplication {
 

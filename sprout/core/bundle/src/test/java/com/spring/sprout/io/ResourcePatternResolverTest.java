@@ -3,8 +3,8 @@ package com.spring.sprout.io;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.spring.sprout.core.io.Resource;
-import com.spring.sprout.core.io.ResourcePatternResolver;
+import com.spring.sprout.bundle.io.Resource;
+import com.spring.sprout.bundle.io.ResourcePatternResolver;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

@@ -1,5 +1,6 @@
-package com.spring.sprout.core.io;
+package com.spring.sprout.bundle.io;
 
+import com.spring.sprout.global.annotation.Component;
 import com.spring.sprout.global.error.ErrorMessage;
 import com.spring.sprout.global.error.SpringException;
 import java.io.File;
@@ -14,14 +15,11 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+@Component
 public class ResourcePatternResolver {
 
     private static final String CLASSPATH_URL_PREFIX = "classpath:";
-    private final ClassLoader classLoader;
-
-    public ResourcePatternResolver() {
-        this.classLoader = Thread.currentThread().getContextClassLoader();
-    }
+    private final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
     public ClassLoader getClassLoader() {
         return this.classLoader;
