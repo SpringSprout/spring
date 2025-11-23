@@ -1,18 +1,18 @@
 rootProject.name = 'spring'
 
-include ':app', ':myproject',
+include ':myproject',
+        ':sprout-starter-web',
         ':sprout:global',
         ':sprout:core-api', ':sprout:core-impl',
         ':sprout:web-api', ':sprout:web-impl',
         ':sprout:data-api', ':sprout:data-impl'
 
-project(':app').projectDir = file('app')
 project(':myproject').projectDir = file('myproject')
 
 project(':sprout:global').projectDir = file('sprout/global')
 
 project(':sprout:core-api').projectDir = file('sprout/core/core-api')
-project(':sprout:core-impl').projectDir = file('sprout/core/core-impl')
+project(':sprout-starter-web').projectDir = file('sprout/core/bundle')
 
 project(':sprout:web-api').projectDir = file('sprout/web/web-api')
 project(':sprout:web-impl').projectDir = file('sprout/web/web-impl')

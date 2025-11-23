@@ -100,12 +100,17 @@ public class BeanFactory {
 
     private Object instantiateBean(Class<?> clazz) throws Exception {
         Constructor<?> targetConstructor = null;
-        for (Constructor<?> constructor : clazz.getDeclaredConstructors()) {
-            if (constructor.isAnnotationPresent(Autowired.class)) {
-                if (targetConstructor != null) {
-                    throw new SpringException(ErrorMessage.NOT_UNIQUE_AUTOWIRED);
+        Constructor<?>[] declaredConstructors = clazz.getDeclaredConstructors();
+        if (declaredConstructors.length == 1) {
+            targetConstructor = declaredConstructors[0];
+        } else {
+            for (Constructor<?> constructor : clazz.getDeclaredConstructors()) {
+                if (constructor.isAnnotationPresent(Autowired.class)) {
+                    if (targetConstructor != null) {
+                        throw new SpringException(ErrorMessage.NOT_UNIQUE_AUTOWIRED);
+                    }
+                    targetConstructor = constructor;
                 }
-                targetConstructor = constructor;
             }
         }
 
