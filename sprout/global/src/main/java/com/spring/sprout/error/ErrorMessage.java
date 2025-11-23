@@ -35,7 +35,7 @@ public enum ErrorMessage {
 
     private final String message;
 
-    private ErrorMessage(String message) {
+    ErrorMessage(String message) {
         this.message = message;
     }
 
