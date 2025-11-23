@@ -2,7 +2,7 @@ package com.spring.sprout.data.support;
 
 import com.spring.sprout.data.tranaction.TransactionInterceptor;
 import com.spring.sprout.data.tranaction.TransactionManager;
-import com.spring.sprout.global.BeanPostProcessor;
+import com.spring.sprout.core.BeanPostProcessor;
 import com.spring.sprout.global.annotation.Autowired;
 import com.spring.sprout.global.annotation.Component;
 import com.spring.sprout.global.annotation.Transactional;
@@ -22,7 +22,7 @@ public class TransactionBeanPostProcessor implements BeanPostProcessor {
 
     // proxy 객체 반환
     @Override
-    public Object postProcessAfterInitialization(Object bean, String beanName) {
+    public Object postProcess(Object bean, String beanName) {
         Class<?> clazz = bean.getClass();
 
         // @Transactional이 있는지 확인

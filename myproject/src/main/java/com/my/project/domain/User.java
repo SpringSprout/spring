@@ -1,4 +1,4 @@
-package com.spring.sprout.domain;
+package com.my.project.domain;
 
 public class User {
 

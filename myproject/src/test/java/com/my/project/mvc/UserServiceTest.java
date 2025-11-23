@@ -1,4 +1,4 @@
-package com.spring.sprout;
+package com.my.project.mvc;
 
 public class UserServiceTest {
 

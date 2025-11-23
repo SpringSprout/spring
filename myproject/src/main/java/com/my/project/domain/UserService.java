@@ -1,4 +1,4 @@
-package com.spring.sprout.domain;
+package com.my.project.domain;
 
 import com.spring.sprout.data.config.JdbcTemplate;
 import com.spring.sprout.global.annotation.Autowired;

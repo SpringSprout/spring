@@ -1,4 +1,4 @@
-package com.spring.sprout.core.api;
+package com.spring.sprout.core;
 
 public interface Environment {
 
