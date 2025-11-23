@@ -1,11 +1,11 @@
 package com.spring.sprout.data.config;
 
-import com.spring.sprout.annotation.Autowired;
-import com.spring.sprout.annotation.Component;
+import com.spring.sprout.global.annotation.Autowired;
+import com.spring.sprout.global.annotation.Component;
 import com.spring.sprout.data.support.EntityMapper;
 import com.spring.sprout.data.support.StatementCallback;
-import com.spring.sprout.error.ErrorMessage;
-import com.spring.sprout.error.SpringException;
+import com.spring.sprout.global.error.ErrorMessage;
+import com.spring.sprout.global.error.SpringException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

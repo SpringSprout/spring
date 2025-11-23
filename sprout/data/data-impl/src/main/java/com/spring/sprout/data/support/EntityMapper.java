@@ -1,7 +1,7 @@
 package com.spring.sprout.data.support;
 
-import com.spring.sprout.error.ErrorMessage;
-import com.spring.sprout.error.SpringException;
+import com.spring.sprout.global.error.ErrorMessage;
+import com.spring.sprout.global.error.SpringException;
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;

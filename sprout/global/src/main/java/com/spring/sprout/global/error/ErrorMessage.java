@@ -26,9 +26,7 @@ public enum ErrorMessage {
     NOT_UNIQUE_AUTOWIRED("Autowired 생성자는 하나만 허용됩니다."),
 
     // 웹 오류
-    NOT_FOUND("NOT FOUND");
-    NOT_UNIQUE_AUTOWIRED("Autowired 생성자는 하나만 허용됩니다."),
-
+    NOT_FOUND("NOT FOUND"),
 
     // -- data --
     SQL_EXECUTION_FILED("SQL 실행 중 오류 발생"),
