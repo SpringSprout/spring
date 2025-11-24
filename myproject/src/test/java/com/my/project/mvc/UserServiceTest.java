@@ -2,7 +2,6 @@ package com.my.project.mvc;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-import com.my.project.domain.User;
 import com.my.project.dto.UserInfo;
 import com.my.project.service.UserService;
 import com.spring.sprout.JdbcTemplate;

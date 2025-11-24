@@ -75,7 +75,7 @@ public class RepositoryHandler implements InvocationHandler {
      */
     private String getTableName() {
         if (entityType.isAnnotationPresent(Entity.class)) {
-            Entity entity = entityType.getAnnotation(Entity.class);
+                Entity entity = entityType.getAnnotation(Entity.class);
             if (!entity.table().isEmpty()) {
                 return entity.table();
             }
