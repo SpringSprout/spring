@@ -32,7 +32,10 @@ public enum ErrorMessage {
     SQL_EXECUTION_FILED("SQL 실행 중 오류 발생"),
 
     // 객체 매핑 실패
-    ENTITY_MAPPING_FILED("객체 매핑에 실패했습니다.");
+    ENTITY_MAPPING_FILED("객체 매핑에 실패했습니다."),
+
+    // 엔티티 오류
+    ENTITY_TYPE_NOT_FOUND("엔티티 타입을 찾을 수 없습니다");
 
     private final String message;
 
