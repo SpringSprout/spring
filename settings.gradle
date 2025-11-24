@@ -3,7 +3,7 @@ rootProject.name = 'spring'
 include ':myproject',
         ':sprout-starter-web',
         ':sprout:global',
-        ':sprout:core-api', ':sprout:core-impl',
+        ':sprout:core-api',
         ':sprout:web-api', ':sprout:web-impl',
         ':sprout:data-api', ':sprout:data-impl'
 

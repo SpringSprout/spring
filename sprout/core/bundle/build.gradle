@@ -4,11 +4,12 @@ plugins {
 dependencies {
     // [API] 사용자가 직접 코드에서 Import해서 사용할 모듈들 (외부 노출)
     api project(':sprout:global')
+    api project(':sprout:data-api')
+    api project(':sprout:core-api')
 
     // [Implementation] 런타임에 실제 기능을 수행할 구현체들 (내부적으로만 사용)
     implementation project(':sprout:web-api')
     implementation project(':sprout:web-impl')
-
-    implementation project(':sprout:core-api')
     implementation project(':sprout:data-impl')
+
 }

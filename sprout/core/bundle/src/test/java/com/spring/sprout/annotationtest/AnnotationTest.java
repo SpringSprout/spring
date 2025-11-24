@@ -4,12 +4,13 @@ import com.spring.sprout.annotationtest.준비물.component.Component;
 import com.spring.sprout.annotationtest.준비물.component.TestClass1;
 import com.spring.sprout.annotationtest.준비물.notcomponent.TestClass2;
 import com.spring.sprout.bundle.beanfactory.BeanFactory;
+import com.spring.sprout.bundle.beanfactory.DefaultBeanFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class AnnotationTest {
 
-    private BeanFactory beanFactory = new BeanFactory();
+    private DefaultBeanFactory beanFactory = new DefaultBeanFactory();
 
     @Test
     public void 어노테이션을_파고들어_결국_component가_있는지_확인한다() {

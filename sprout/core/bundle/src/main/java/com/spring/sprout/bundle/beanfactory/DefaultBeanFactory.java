@@ -4,6 +4,7 @@ import static com.spring.sprout.global.error.ErrorMessage.NO_BEAN_FOUND_WITH_NAM
 import static com.spring.sprout.global.error.ErrorMessage.NO_BEAN_FOUND_WITH_TYPE;
 import static com.spring.sprout.global.error.ErrorMessage.NO_UNIQUE_BEAN_FOUND_WITH_TYPE;
 
+import com.spring.sprout.bundle.BeanPostProcessor;
 import com.spring.sprout.bundle.beanfactory.support.BeanNameGenerator;
 import com.spring.sprout.global.annotation.Autowired;
 import com.spring.sprout.global.annotation.Component;
@@ -12,8 +13,10 @@ import com.spring.sprout.global.error.SpringException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,6 +27,7 @@ public class DefaultBeanFactory implements BeanFactory {
     private final BeanNameGenerator beanNameGenerator = new BeanNameGenerator();
     private final Map<Class<? extends Annotation>, Boolean> componentAnnotationCache = new ConcurrentHashMap<>();
     private Map<String, Object> singletonObjects = new HashMap<>();
+    private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
 
     @Override
     public Object getBean(String name) {
@@ -95,18 +99,64 @@ public class DefaultBeanFactory implements BeanFactory {
     private Object createBean(Class<?> clazz) {
         String beanName = beanNameGenerator.determineBeanName(clazz);
 
-        if (singletonObjects.containsKey(beanName)) {
+        if (singletonObjects.containsKey(beanName)) { // 이미 있는지 확인
             return singletonObjects.get(beanName);
         }
 
         try {
-            Object instance = instantiateBean(clazz);
-            singletonObjects.put(beanName, instance);
-            injectFields(instance);
-            return instance;
+            Object instance = instantiateBean(clazz); // 새로운 인스턴스 생성
+            singletonObjects.put(beanName, instance); // 미리 등록
+            injectFields(instance); // 의존성 주입
+            if (BeanPostProcessor.class.isAssignableFrom(clazz)) { // 후처리기 자신일 경우 후처리 적용 안함
+                return instance;
+            }
+            Object exposedObject = applyBeanPostProcessors(instance, beanName); // 후처리 적용
+            if (exposedObject != instance) { // 프록시가 원본과 다르면 갱신
+                singletonObjects.put(beanName, exposedObject);
+            }
+            return exposedObject; // 프록시 또는 원본 반환
+
         } catch (Exception e) {
+            singletonObjects.remove(beanName);
             throw new SpringException(ErrorMessage.BEAN_CREATION_FAILED);
         }
+    }
+
+    // 모든 후처리기를 돌면서 객체를 변환
+    private Object applyBeanPostProcessors(Object existingBean,
+        String beanName) throws Exception {
+        Object result = existingBean;
+
+        // 등록된 프로세서들을 하나씩 실행
+        for (BeanPostProcessor processor : getBeanPostProcessors()) {
+            Object current = processor.postProcess(result, beanName);
+            if (current == null) {
+                return result;
+            }
+            result = current;
+        }
+        return result;
+    }
+
+    // BeanPostProcessor 타입의 빈들을 찾아서 리스트로 반환
+    private List<BeanPostProcessor> getBeanPostProcessors() throws Exception {
+        if (!this.beanPostProcessors.isEmpty()) {
+            return this.beanPostProcessors;
+        }
+
+        // 컨테이너에 등록된 빈들 중에서 BeanPostProcessor 구현체를 찾음
+        for (Class<?> clazz : componentClasses) {
+            if (BeanPostProcessor.class.isAssignableFrom(clazz)) {
+                try {
+                    BeanPostProcessor processor = (BeanPostProcessor) getBean(clazz);
+                    this.beanPostProcessors.add(processor);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return this.beanPostProcessors;
     }
 
     private Object instantiateBean(Class<?> clazz) throws Exception {
@@ -148,7 +198,6 @@ public class DefaultBeanFactory implements BeanFactory {
             }
         }
     }
-
 
     /**
      * 클래스에 @Component가 있거나,
