@@ -6,6 +6,7 @@ import com.spring.sprout.global.annotation.Autowired;
 import com.spring.sprout.global.annotation.controller.Controller;
 import com.spring.sprout.global.annotation.controller.GetMapping;
 import com.spring.sprout.global.annotation.controller.PostMapping;
+import com.spring.sprout.global.annotation.controller.RequestBody;
 import com.spring.sprout.global.annotation.controller.RequestMapping;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/join")
-    public void join(UserInfo userInfo) {
+    public void join(@RequestBody UserInfo userInfo) {
         userService.join(userInfo);
     }
 

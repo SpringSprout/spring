@@ -6,12 +6,14 @@ import com.spring.sprout.global.annotation.Component;
 import com.spring.sprout.global.annotation.controller.Controller;
 import com.spring.sprout.global.annotation.controller.GetMapping;
 import com.spring.sprout.global.annotation.controller.PostMapping;
+import com.spring.sprout.global.annotation.controller.RequestBody;
 import com.spring.sprout.global.error.ErrorMessage;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -93,8 +95,16 @@ public class DispatcherServlet extends HttpServlet {
 
                     // 리플렉션 호출 로직을 람다로 캡슐화하여 등록
                     handlerMapping.put(handlerKey, (request, response) -> {
-                        // TODO: 파라미터 바인딩 로직 추가 필요 (현재는 파라미터 없는 메서드만 호출 가능)
-                        Object result = method.invoke(bean);
+                        Parameter[] parameters = method.getParameters();
+                        Object[] args = new Object[parameters.length];
+                        for(int i = 0; i < parameters.length; i++) {
+                            Parameter parameter = parameters[i];
+                            if(parameter.isAnnotationPresent(RequestBody.class)){
+                                args[i] =  objectMapper.readValue(request.getReader(), parameter.getType());
+                            }
+                        }
+
+                        Object result = method.invoke(bean, args);
 
                         response.setContentType("application/json;charset=UTF-8");
                         if (result != null) {
