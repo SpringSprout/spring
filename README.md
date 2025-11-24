@@ -28,7 +28,7 @@ docker-compose up -d
 
 ### 2. 애플리케이션 실행
 
-**방법 A: Gradle로 실행 (권장)**
+**방법 A: Gradle로 실행**
 build.gradle에 필요한 JVM 옵션이 이미 설정되어 있어 가장 간편합니다.
 
 ```
@@ -46,17 +46,32 @@ IDE에서 MyProjectApplication의 main()을 직접 실행하려면, Java 17+ 모
 java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED
 ```
 
+**성공 시 예시 화면**
+
+```angular2html
+  _____                  _
+/ ____|                 | |
+| (___  _ __  _ __ ___  _| |_
+\___ \| '_ \| '__/ _ \| | __|
+____) | |_) | | | (_) | | |_
+|_____/| .__/|_|  \___/ \__|
+| |
+|_|
+
+:: Sprout ::             (v1.0.0)
+```
+
 ## 🧪 기능 테스트
 
 서버가 성공적으로 실행되면 (http://localhost:8080), 아래 방법으로 기능을 검증할 수 있습니다.
 
 ### 📡 API 엔드포인트
 
-| Feature | Method | URL    | Description                                |
-|---------|--------|--------|--------------------------------------------|
-| 회원 가입   | POST   | /join  | Form Data (name, age) 전송 시 DB 저장 (트랜잭션 커밋) |
-| 단건 조회   | POST   | /find  | Form Data (id) 전송 시 회원 정보 반환               |
-| 전체 조회   | GET    | /users | 전체 회원 목록 반환                                |
+| Feature | Method | URL    | Description                                    |
+|---------|--------|--------|------------------------------------------------|
+| 회원 가입   | POST   | /join  | Form Data (id, name, age) 전송 시 DB 저장 (트랜잭션 커밋) |
+| 단건 조회   | POST   | /find  | Form Data (id) 전송 시 회원 정보 반환                   |
+| 전체 조회   | GET    | /users | 전체 회원 목록 반환                                    |
 
 ## 📂 프로젝트 구조
 
