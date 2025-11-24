@@ -3,6 +3,7 @@ package com.my.project.service;
 import static java.util.stream.Collectors.toList;
 
 import com.my.project.domain.User;
+import com.my.project.dto.Id;
 import com.my.project.dto.UserInfo;
 import com.my.project.repository.UserRepository;
 import com.spring.sprout.global.annotation.Autowired;
@@ -23,8 +24,8 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public UserInfo findInfo(int id) {
-        User user = userRepository.findById(id);
+    public UserInfo findInfo(Id id) {
+        User user = userRepository.findById(id.id());
         UserInfo userInfo = new UserInfo(user.getId(), user.getName(), user.getAge());
         return userInfo;
     }

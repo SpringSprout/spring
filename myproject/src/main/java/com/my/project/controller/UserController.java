@@ -1,5 +1,6 @@
 package com.my.project.controller;
 
+import com.my.project.dto.Id;
 import com.my.project.dto.UserInfo;
 import com.my.project.service.UserService;
 import com.spring.sprout.global.annotation.Autowired;
@@ -25,7 +26,7 @@ public class UserController {
     }
 
     @PostMapping("/find")
-    public UserInfo findUser(int id) {
+    public UserInfo findUser(@RequestBody Id id) {
         return userService.findInfo(id);
     }
 
