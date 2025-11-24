@@ -2,6 +2,7 @@ package com.my.project.mvc;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
+import com.my.project.dto.Id;
 import com.my.project.dto.UserInfo;
 import com.my.project.service.UserService;
 import com.spring.sprout.JdbcTemplate;
@@ -38,7 +39,7 @@ public class UserServiceTest {
         userService.join(user);
 
         // then
-        UserInfo result = userService.findInfo(6);
+        UserInfo result = userService.findInfo(new Id(6));
 
         assertThat(result.name()).isEqualTo("dongju");
     }
