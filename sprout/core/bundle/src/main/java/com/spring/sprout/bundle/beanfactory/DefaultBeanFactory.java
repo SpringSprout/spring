@@ -220,14 +220,16 @@ public class DefaultBeanFactory implements BeanFactory {
         }
 
         for (Class<?> clazz : componentClasses) {
-            if (BeanPostProcessor.class.isAssignableFrom(clazz)) {
-                try {
-                    // 후처리기 빈을 먼저 생성하여 활성화
-                    BeanPostProcessor processor = (BeanPostProcessor) getBean(clazz);
-                    this.beanPostProcessors.add(processor);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            // [Refactoring] 조건 불만족 시 continue 처리하여 중첩 레벨 감소
+            if (!BeanPostProcessor.class.isAssignableFrom(clazz)) {
+                continue;
+            }
+
+            try {
+                BeanPostProcessor processor = (BeanPostProcessor) getBean(clazz);
+                this.beanPostProcessors.add(processor);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         return this.beanPostProcessors;
@@ -242,47 +244,47 @@ public class DefaultBeanFactory implements BeanFactory {
      * </ul>
      */
     private Object instantiateBean(Class<?> clazz) throws Exception {
-        // 1. 인터페이스 처리 (JPA 스타일의 Repository 자동 구현)
         if (clazz.isInterface()) {
-            if (clazz.isAnnotationPresent(Repository.class)) {
-                return createRepositoryProxy(clazz);
+            if (!clazz.isAnnotationPresent(Repository.class)) {
+                throw new SpringException(ErrorMessage.BEAN_CREATION_FAILED);
             }
-            throw new SpringException(ErrorMessage.BEAN_CREATION_FAILED);
+            return createRepositoryProxy(clazz);
         }
 
-        // 2. 생성자 결정 로직
-        Constructor<?> targetConstructor = null;
+        Constructor<?> targetConstructor = determineConstructor(clazz);
+        return injectConstructor(targetConstructor);
+    }
+
+    private Constructor<?> determineConstructor(Class<?> clazz) throws NoSuchMethodException {
         Constructor<?>[] declaredConstructors = clazz.getDeclaredConstructors();
 
-        // 생성자가 하나뿐이면 묵시적으로 의존성 주입 대상으로 간주
         if (declaredConstructors.length == 1) {
-            targetConstructor = declaredConstructors[0];
-        } else {
-            // 여러 개라면 @Autowired가 붙은 생성자 탐색
-            for (Constructor<?> constructor : clazz.getDeclaredConstructors()) {
-                if (constructor.isAnnotationPresent(Autowired.class)) {
-                    if (targetConstructor != null) {
-                        throw new SpringException(ErrorMessage.NOT_UNIQUE_AUTOWIRED);
-                    }
-                    targetConstructor = constructor;
+            return declaredConstructors[0];
+        }
+
+        Constructor<?> targetConstructor = null;
+        for (Constructor<?> constructor : declaredConstructors) {
+            if (constructor.isAnnotationPresent(Autowired.class)) {
+                if (targetConstructor != null) {
+                    throw new SpringException(ErrorMessage.NOT_UNIQUE_AUTOWIRED);
                 }
+                targetConstructor = constructor;
             }
         }
 
-        // 적절한 생성자가 없으면 기본 생성자 시도
-        if (targetConstructor == null) {
-            return clazz.getDeclaredConstructor().newInstance();
-        }
+        return targetConstructor != null ? targetConstructor : clazz.getDeclaredConstructor();
+    }
 
-        // 3. 생성자 파라미터 주입 (재귀적 빈 조회)
-        Class<?>[] parameterTypes = targetConstructor.getParameterTypes();
+    private Object injectConstructor(Constructor<?> constructor) throws Exception {
+        Class<?>[] parameterTypes = constructor.getParameterTypes();
         Object[] args = new Object[parameterTypes.length];
+
         for (int i = 0; i < parameterTypes.length; i++) {
             args[i] = getBean(parameterTypes[i]);
         }
-
-        return targetConstructor.newInstance(args);
+        return constructor.newInstance(args);
     }
+
 
     /**
      * JDK Dynamic Proxy를 사용하여 인터페이스 기반의 Repository 구현체를 런타임에 생성합니다. 실제 쿼리 실행은
