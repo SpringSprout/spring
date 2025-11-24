@@ -11,5 +11,4 @@ dependencies {
     implementation project(':sprout:web-api')
     implementation project(':sprout:web-impl')
     implementation project(':sprout:data-impl')
-    implementation project(':sprout:core-api')
 }
